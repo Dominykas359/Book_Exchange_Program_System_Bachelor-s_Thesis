@@ -19,20 +19,15 @@ public class Publication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     private String title;
 
-    @NonNull
     private String author;
 
-    @NonNull
     @Column(name = "release_year")
     private LocalDate releaseYear;
 
-    @NonNull
     private String language;
 
-    @NonNull
     @Lob
     private String description;
 

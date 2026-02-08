@@ -19,7 +19,6 @@ public class Notice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
     @Column(name = "time_posted")
     private LocalDate timePosted;
 

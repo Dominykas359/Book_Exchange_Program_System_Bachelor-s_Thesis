@@ -16,19 +16,33 @@ public class VectorDbInitializer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initVectorSupport() {
-        // 1) Enable pgvector extension (server must have it installed)
         jdbcTemplate.execute("CREATE EXTENSION IF NOT EXISTS vector;");
 
-        // 2) Add embedding column (E5 base = 768 dims)
         jdbcTemplate.execute("""
-            ALTER TABLE publications
-            ADD COLUMN IF NOT EXISTS embedding vector(768);
+            CREATE TABLE IF NOT EXISTS publication_embeddings (
+              publication_id BIGINT NOT NULL REFERENCES publications(id) ON DELETE CASCADE,
+              model_key VARCHAR(32) NOT NULL,
+              embedding vector(768) NOT NULL,
+              PRIMARY KEY (publication_id, model_key)
+            );
         """);
 
-        // 3) ANN index for cosine similarity
         jdbcTemplate.execute("""
-            CREATE INDEX IF NOT EXISTS publications_embedding_hnsw
-            ON publications USING hnsw (embedding vector_cosine_ops);
+            CREATE INDEX IF NOT EXISTS pub_emb_bert_hnsw
+            ON publication_embeddings USING hnsw (embedding vector_cosine_ops)
+            WHERE model_key = 'bert';
+        """);
+
+        jdbcTemplate.execute("""
+            CREATE INDEX IF NOT EXISTS pub_emb_distilbert_hnsw
+            ON publication_embeddings USING hnsw (embedding vector_cosine_ops)
+            WHERE model_key = 'distilbert';
+        """);
+
+        jdbcTemplate.execute("""
+            CREATE INDEX IF NOT EXISTS pub_emb_roberta_hnsw
+            ON publication_embeddings USING hnsw (embedding vector_cosine_ops)
+            WHERE model_key = 'roberta';
         """);
     }
 }

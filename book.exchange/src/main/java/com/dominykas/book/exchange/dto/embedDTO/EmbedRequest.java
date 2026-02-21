@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmbedRequest {
-
     private String text;
+    private String modelKey;
 }

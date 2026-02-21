@@ -17,10 +17,10 @@ public class EmbeddingService {
     private final WebClient mlWebClient;
     private final MIProperties props;
 
-    public List<Double> embed(String text) {
+    public List<Double> embed(String text, String modelKey) {
         EmbedResponse res = mlWebClient.post()
                 .uri("/embed")
-                .bodyValue(new EmbedRequest(text))
+                .bodyValue(new EmbedRequest(text, modelKey))
                 .retrieve()
                 .bodyToMono(EmbedResponse.class)
                 .timeout(Duration.ofSeconds(props.timeoutSeconds()))

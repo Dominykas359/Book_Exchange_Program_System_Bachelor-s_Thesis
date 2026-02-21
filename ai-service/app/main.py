@@ -1,28 +1,29 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sentence_transformers import SentenceTransformer
 
 app = FastAPI(title="ML Embedding Service")
 
-MODEL_NAME = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
-model = SentenceTransformer(MODEL_NAME)
+MODELS = {
+    "bert": SentenceTransformer("sentence-transformers/bert-base-nli-mean-tokens"),
+    "distilbert": SentenceTransformer("sentence-transformers/distilbert-base-nli-stsb-mean-tokens"),
+    "roberta": SentenceTransformer("sentence-transformers/roberta-base-nli-stsb-mean-tokens"),
+}
+
+DEFAULT_MODEL = "roberta"  # choose what you want as default
 
 class EmbedRequest(BaseModel):
     text: str
-
-class EmbedBatchRequest(BaseModel):
-    texts: list[str]
+    modelKey: str = Field(default=DEFAULT_MODEL)
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "model": MODEL_NAME, "dim": 768}
+    return {"status": "ok", "models": list(MODELS.keys()), "dim": 768, "default": DEFAULT_MODEL}
 
 @app.post("/embed")
 def embed(req: EmbedRequest):
-    vec = model.encode(req.text, normalize_embeddings=True).tolist()
-    return {"vector": vec, "dim": len(vec), "model": MODEL_NAME}
+    if req.modelKey not in MODELS:
+        return {"error": f"Unknown modelKey: {req.modelKey}", "allowed": list(MODELS.keys())}
 
-@app.post("/embed-batch")
-def embed_batch(req: EmbedBatchRequest):
-    vectors = model.encode(req.texts, normalize_embeddings=True).tolist()
-    return {"vectors": vectors, "count": len(vectors), "dim": len(vectors[0]) if vectors else 0, "model": MODEL_NAME}
+    vec = MODELS[req.modelKey].encode(req.text, normalize_embeddings=True).tolist()
+    return {"vector": vec, "dim": len(vec), "modelKey": req.modelKey}

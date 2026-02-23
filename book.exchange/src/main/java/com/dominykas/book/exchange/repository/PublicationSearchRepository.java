@@ -47,6 +47,30 @@ public class PublicationSearchRepository {
         );
     }
 
+    public List<SearchRow> searchTopK(List<Double> queryEmbedding, String modelKey, int limit) {
+        String qVec = toVectorLiteral(queryEmbedding);
+
+        String sql = """
+        SELECT p.*,
+               (1 - (e.embedding <=> ?::vector)) AS score
+        FROM publication_embeddings e
+        JOIN publications p ON p.id = e.publication_id
+        WHERE e.model_key = ?
+          AND e.embedding IS NOT NULL
+        ORDER BY (e.embedding <=> ?::vector)
+        LIMIT ?;
+    """;
+
+        return jdbcTemplate.query(
+                sql,
+                searchRowMapper(),
+                qVec,
+                modelKey,
+                qVec,
+                limit
+        );
+    }
+
     private RowMapper<SearchRow> searchRowMapper() {
         return (rs, rowNum) -> new SearchRow(mapPublication(rs), rs.getDouble("score"));
     }

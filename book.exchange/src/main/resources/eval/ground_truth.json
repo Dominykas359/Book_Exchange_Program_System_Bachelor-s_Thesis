@@ -1,0 +1,25 @@
+[
+  { "query": "witcher monster hunter", "relevant": [1] },
+  { "query": "geralt of rivia destiny yennefer", "relevant": [1,2] },
+  { "query": "ciri prophecy saga", "relevant": [3,4,5,6,7] },
+  { "query": "dark fantasy polish saga", "relevant": [1,2,3,4,5,6,7,8] },
+
+  { "query": "wizard school boy", "relevant": [9] },
+  { "query": "hogwarts magic tournament", "relevant": [12] },
+  { "query": "voldemort final battle", "relevant": [15] },
+  { "query": "harry ron hermione", "relevant": [9,10,11,12,13,14,15] },
+
+  { "query": "ring middle earth hobbit", "relevant": [16] },
+  { "query": "gondor aragorn war", "relevant": [18] },
+  { "query": "lord of the rings trilogy", "relevant": [16,17,18] },
+
+  { "query": "russian psychological novel guilt murder", "relevant": [22] },
+  { "query": "existential underground narrator", "relevant": [21] },
+  { "query": "karamazov brothers philosophy", "relevant": [27] },
+
+  { "query": "clean code software craftsmanship", "relevant": [36] },
+  { "query": "design patterns object oriented", "relevant": [38] },
+  { "query": "algorithms textbook university", "relevant": [40] },
+  { "query": "coding interview preparation", "relevant": [43] },
+  { "query": "refactoring legacy code", "relevant": [39] }
+]

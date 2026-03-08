@@ -22,4 +22,11 @@ public class UserService {
         user = userRepository.save(user);
         return UserMapper.toDto(user);
     }
+
+    public UserResponseDTO findByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return UserMapper.toDto(user);
+    }
 }

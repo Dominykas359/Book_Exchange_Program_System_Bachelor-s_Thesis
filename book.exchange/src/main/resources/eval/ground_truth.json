@@ -1,25 +1,215 @@
 [
-  { "query": "witcher monster hunter", "relevant": [1] },
-  { "query": "geralt of rivia destiny yennefer", "relevant": [1,2] },
-  { "query": "ciri prophecy saga", "relevant": [3,4,5,6,7] },
-  { "query": "dark fantasy polish saga", "relevant": [1,2,3,4,5,6,7,8] },
-
-  { "query": "wizard school boy", "relevant": [9] },
-  { "query": "hogwarts magic tournament", "relevant": [12] },
-  { "query": "voldemort final battle", "relevant": [15] },
-  { "query": "harry ron hermione", "relevant": [9,10,11,12,13,14,15] },
-
-  { "query": "ring middle earth hobbit", "relevant": [16] },
-  { "query": "gondor aragorn war", "relevant": [18] },
-  { "query": "lord of the rings trilogy", "relevant": [16,17,18] },
-
-  { "query": "russian psychological novel guilt murder", "relevant": [22] },
-  { "query": "existential underground narrator", "relevant": [21] },
-  { "query": "karamazov brothers philosophy", "relevant": [27] },
-
-  { "query": "clean code software craftsmanship", "relevant": [36] },
-  { "query": "design patterns object oriented", "relevant": [38] },
-  { "query": "algorithms textbook university", "relevant": [40] },
-  { "query": "coding interview preparation", "relevant": [43] },
-  { "query": "refactoring legacy code", "relevant": [39] }
+  {
+    "query": "books about a mutated monster hunter named Geralt called a witcher in a brutal fantasy world",
+    "relevant": [
+      1329,
+      2335,
+      2688,
+      3254,
+      3978,
+      4058,
+      5007,
+      14754,
+      16644
+    ]
+  },
+  {
+    "query": "dark fantasy saga where Geralt navigates war politics and moral choices across kingdoms",
+    "relevant": [
+      1329,
+      2335,
+      2688,
+      3254,
+      3978,
+      4058,
+      5007,
+      14754,
+      16644
+    ]
+  },
+  {
+    "query": "short story collections following Geralt's early adventures and contracts",
+    "relevant": [
+      1329,
+      2335,
+      16644
+    ]
+  },
+  {
+    "query": "the witcher short stories before the main saga begins",
+    "relevant": [
+      1329,
+      2335,
+      16644
+    ]
+  },
+  {
+    "query": "witcher saga novels about war between humans and other races and fragile alliances",
+    "relevant": [
+      2335,
+      2688,
+      3254,
+      3978,
+      4058,
+      5007
+    ]
+  },
+  {
+    "query": "stories where Geralt Yennefer and Ciri are separated by war and fate",
+    "relevant": [
+      3978,
+      5007
+    ]
+  },
+  {
+    "query": "books featuring Ciri and her destiny while Geralt searches for her",
+    "relevant": [
+      3254,
+      3978,
+      4058,
+      5007
+    ]
+  },
+  {
+    "query": "witcher books about Ciri fleeing enemies and traveling through dangerous lands",
+    "relevant": [
+      3254,
+      3978,
+      4058,
+      5007
+    ]
+  },
+  {
+    "query": "books where Yennefer appears and magic politics surround her relationship with Geralt",
+    "relevant": [
+      3978,
+      5007,
+      14754,
+      16644
+    ]
+  },
+  {
+    "query": "witcher stories involving sorceresses and secret magical factions manipulating kingdoms",
+    "relevant": [
+      3254,
+      3978,
+      5007
+    ]
+  },
+  {
+    "query": "fantasy books about portals other worlds and Ciri trying to survive after escaping death",
+    "relevant": [
+      4058,
+      5007
+    ]
+  },
+  {
+    "query": "books about a white haired monster slayer and a sorceress named Yennefer",
+    "relevant": [
+      3978,
+      14754,
+      16644,
+      5007
+    ]
+  },
+  {
+    "query": "witcher book set outside the main saga focusing on Geralt between earlier adventures",
+    "relevant": [
+      14754,
+      1329
+    ]
+  },
+  {
+    "query": "polish witcher books by Andrzej Sapkowski including the saga and story collections",
+    "relevant": [
+      2335,
+      3254,
+      3978,
+      4058,
+      5007,
+      14754,
+      16644
+    ]
+  },
+  {
+    "query": "english editions of the witcher featuring Geralt and the wars of the continent",
+    "relevant": [
+      1329,
+      2688,
+      4058
+    ]
+  },
+  {
+    "query": "books with Geralt as an outsider who chooses between neutrality and protecting others",
+    "relevant": [
+      1329,
+      2335,
+      2688,
+      3254,
+      3978,
+      4058,
+      5007,
+      14754,
+      16644
+    ]
+  },
+  {
+    "query": "fantasy books with monsters curses and twisted fairy tale style encounters",
+    "relevant": [
+      1329,
+      2335,
+      16644
+    ]
+  },
+  {
+    "query": "witcher books about the lodge of sorceresses and secret political plots",
+    "relevant": [
+      3254,
+      3978
+    ]
+  },
+  {
+    "query": "books about destiny prophecy and the child of surprise in the witcher universe",
+    "relevant": [
+      2335,
+      2688,
+      3978,
+      4058,
+      5007
+    ]
+  },
+  {
+    "query": "witcher books where Geralt faces war and betrayal while searching for his family",
+    "relevant": [
+      2688,
+      3254,
+      3978,
+      5007,
+      4058
+    ]
+  },
+  {
+    "query": "books about Geralt the witcher and the uneasy peace between races breaking into war",
+    "relevant": [
+      2688,
+      3254,
+      3978,
+      5007,
+      4058
+    ]
+  },
+  {
+    "query": "fantasy books set in the witcher world with swordplay monsters and grim humor",
+    "relevant": [
+      1329,
+      2335,
+      2688,
+      3254,
+      3978,
+      4058,
+      5007,
+      14754,
+      16644
+    ]
+  }
 ]

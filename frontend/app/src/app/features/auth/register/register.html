@@ -1,0 +1,73 @@
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="brand">
+      <h1>Welcome to Book Exchange</h1>
+    </div>
+
+    <p class="subtitle">Create your account to start exchanging books.</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+      <div class="field">
+        <label>Email</label>
+        <input
+          type="email"
+          formControlName="email"
+          (blur)="checkEmail()"
+          placeholder="you@example.com"
+        />
+        <p class="error" *ngIf="emailError().errorType === ErrorType.EmailRegistered">
+          {{ emailError().message }}
+        </p>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label>Firstname</label>
+          <input type="text" formControlName="firstName" placeholder="First name" />
+        </div>
+
+        <div class="field">
+          <label>Lastname</label>
+          <input type="text" formControlName="lastName" placeholder="Last name" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input
+          type="password"
+          formControlName="password"
+          (input)="handlePasswordValidation()"
+          placeholder="••••••••"
+        />
+        <p class="error" *ngIf="passwordError().errorType === ErrorType.TooWeakPassword">
+          {{ passwordError().message }}
+        </p>
+      </div>
+
+      <div class="field">
+        <label>Confirm Password</label>
+        <input
+          type="password"
+          formControlName="confirmPassword"
+          (input)="handlePasswordValidation()"
+          placeholder="••••••••"
+        />
+        <p class="error" *ngIf="passwordError().errorType === ErrorType.PasswordNotMatch">
+          {{ passwordError().message }}
+        </p>
+      </div>
+
+      <p class="server-error" *ngIf="serverError()">{{ serverError() }}</p>
+
+      <button class="primary" type="submit" [disabled]="isSubmitting() || form.invalid || hasBlockingError()">
+        {{ isSubmitting() ? 'Creating account…' : 'Sign Up' }}
+      </button>
+    </form>
+
+    <div class="footer">
+      <span>Already have an account?</span>
+      <a routerLink="/login">Log in</a>
+    </div>
+  </div>
+</div>

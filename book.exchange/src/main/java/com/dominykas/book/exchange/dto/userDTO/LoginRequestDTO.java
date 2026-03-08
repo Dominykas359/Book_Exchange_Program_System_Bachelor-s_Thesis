@@ -1,18 +1,16 @@
 package com.dominykas.book.exchange.dto.userDTO;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-@Data
-@SuperBuilder(toBuilder = true)
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDTO {
+@SuperBuilder(toBuilder = true)
+public class LoginRequestDTO {
 
-    private Long id;
     private String email;
-    private String firstName;
-    private String lastName;
+    private String password;
 }

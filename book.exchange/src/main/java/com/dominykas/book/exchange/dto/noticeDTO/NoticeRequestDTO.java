@@ -8,6 +8,7 @@ import java.time.LocalDate;
 public class NoticeRequestDTO {
 
     private LocalDate timePosted;
+    private String wishInReturn;
     private Long posterId;
     private Long publicationId;
 }

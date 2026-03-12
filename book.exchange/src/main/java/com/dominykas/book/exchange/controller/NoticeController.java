@@ -4,10 +4,9 @@ import com.dominykas.book.exchange.dto.noticeDTO.NoticeRequestDTO;
 import com.dominykas.book.exchange.dto.noticeDTO.NoticeResponseDTO;
 import com.dominykas.book.exchange.service.NoticeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/notices")
@@ -19,5 +18,25 @@ public class NoticeController {
     @PostMapping
     public NoticeResponseDTO createNotice(@RequestBody NoticeRequestDTO noticeRequestDTO) {
         return noticeService.createNotice(noticeRequestDTO);
+    }
+
+    @GetMapping
+    public List<NoticeResponseDTO> getAllNotices() {
+        return noticeService.getAllNotices();
+    }
+
+    @GetMapping("/{id}")
+    public NoticeResponseDTO getNoticeById(@PathVariable Long id) {
+        return noticeService.getNoticeById(id);
+    }
+
+    @GetMapping("/publication/{publicationId}")
+    public NoticeResponseDTO getNoticeByPublicationId(@PathVariable Long publicationId) {
+        return noticeService.getNoticeByPublicationId(publicationId);
+    }
+
+    @GetMapping("/poster/{posterId}")
+    public List<NoticeResponseDTO> getNoticesByPosterId(@PathVariable Long posterId) {
+        return noticeService.getNoticesByPosterId(posterId);
     }
 }

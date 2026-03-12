@@ -22,6 +22,9 @@ public class Notice {
     @Column(name = "time_posted")
     private LocalDate timePosted;
 
+    @Column(columnDefinition = "TEXT", name = "wish_in_return")
+    private String wishInReturn;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "poster_id")
     private User poster;

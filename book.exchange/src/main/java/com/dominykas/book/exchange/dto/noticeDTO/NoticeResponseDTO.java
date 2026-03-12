@@ -10,6 +10,7 @@ import java.time.LocalDate;
 public class NoticeResponseDTO {
     private Long id;
     private LocalDate timePosted;
+    private String wishInReturn;
     private UserResponseDTO poster;
     private PublicationResponseDTO publication;
 }

@@ -1,0 +1,51 @@
+<div class="shell">
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <div class="brand-mark">BE</div>
+        <div class="brand-text">
+          <h1>Book Exchange</h1>
+          <p>Navigation</p>
+        </div>
+      </div>
+
+      <nav class="nav-group">
+        <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          Notices
+        </a>
+
+        <a routerLink="/create" routerLinkActive="active">
+          Create notice
+        </a>
+
+        <a routerLink="/ai-agent" routerLinkActive="active">
+          AI agent
+        </a>
+
+        <a routerLink="/history" routerLinkActive="active">
+          History
+        </a>
+      </nav>
+    </div>
+
+    <div class="sidebar-bottom">
+      <nav class="nav-group">
+        <a routerLink="/profile" routerLinkActive="active">
+          Profile
+        </a>
+
+        <a routerLink="/settings" routerLinkActive="active">
+          Settings
+        </a>
+
+        <button type="button" class="logout-btn" (click)="logout()">
+          Log out
+        </button>
+      </nav>
+    </div>
+  </aside>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>

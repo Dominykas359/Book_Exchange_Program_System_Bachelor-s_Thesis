@@ -1,31 +1,139 @@
-@use '../auth/register/register.scss' as *;
-
-textarea,
-.field input,
-.field select {
-  border: 1px solid rgba(15, 23, 42, 0.12);
-  border-radius: 12px;
-  padding: 10px 12px;
-  outline: none;
-  font-size: 14px;
-  transition: box-shadow 150ms ease, border-color 150ms ease;
+.page {
   width: 100%;
-  box-sizing: border-box;
+}
 
-  &:focus {
-    border-color: rgba(79, 70, 229, 0.55);
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+.page-card {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  padding: 28px;
+  box-sizing: border-box;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+.subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    border-radius: 12px;
+    padding: 10px 12px;
+    outline: none;
+    font-size: 14px;
+    transition: box-shadow 150ms ease, border-color 150ms ease;
+
+    &:focus {
+      border-color: rgba(79, 70, 229, 0.55);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
   }
 }
 
-textarea {
-  resize: vertical;
-  min-height: 96px;
+.grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 640px) {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
-input[type='checkbox'] {
-  width: auto;
-  padding: 0;
-  min-height: auto;
-  justify-self: start;
+.checkbox-field {
+  align-content: start;
+
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    margin-top: 6px;
+    padding: 0;
+    box-shadow: none;
+  }
+}
+
+.hint {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.error {
+  margin: 0;
+  font-size: 12px;
+  color: #dc2626;
+}
+
+.server-error {
+  margin: 0;
+  font-size: 13px;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+
+.primary {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 11px 14px;
+  font-weight: 650;
+  color: #fff;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  cursor: pointer;
+  transition: transform 120ms ease, filter 120ms ease;
+
+  &:hover {
+    filter: brightness(1.03);
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }

@@ -1,0 +1,108 @@
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="brand">
+      <h1>Book Exchange</h1>
+    </div>
+
+    <h2 class="title">Create Notice</h2>
+    <p class="subtitle">
+      Add your publication and describe what you want in return.
+    </p>
+
+    <form class="form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label for="title">Title</label>
+        <input id="title" type="text" formControlName="title" />
+        @if (hasError('title', 'required')) {
+        <p class="error">Title is required.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="author">Author</label>
+        <input id="author" type="text" formControlName="author" />
+        @if (hasError('author', 'required')) {
+        <p class="error">Author is required.</p>
+        }
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label for="releaseYear">Release date</label>
+          <input id="releaseYear" type="date" formControlName="releaseYear" />
+          @if (hasError('releaseYear', 'required')) {
+          <p class="error">Release date is required.</p>
+          }
+        </div>
+
+        <div class="field">
+          <label for="language">Language</label>
+          <input id="language" type="text" formControlName="language" />
+          @if (hasError('language', 'required')) {
+          <p class="error">Language is required.</p>
+          }
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="description">Description</label>
+        <textarea id="description" rows="4" formControlName="description"></textarea>
+        @if (hasError('description', 'required')) {
+        <p class="error">Description is required.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="pageCount">Page count</label>
+        <input id="pageCount" type="number" min="1" formControlName="pageCount" />
+        @if (hasError('pageCount', 'required')) {
+        <p class="error">Page count is required.</p>
+        }
+        @if (hasError('pageCount', 'min')) {
+        <p class="error">Page count must be at least 1.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="cover">Cover (optional)</label>
+        <input id="cover" type="text" formControlName="cover" placeholder="e.g. hardcover" />
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label for="editionNumber">Edition number (optional)</label>
+          <input id="editionNumber" type="number" min="1" formControlName="editionNumber" />
+          @if (hasError('editionNumber', 'min')) {
+          <p class="error">Edition number must be at least 1.</p>
+          }
+        </div>
+
+        <div class="field">
+          <label for="colored">Colored (optional)</label>
+          <input id="colored" type="checkbox" formControlName="colored" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="wishInReturn">What do you want in return?</label>
+        <textarea
+          id="wishInReturn"
+          rows="3"
+          formControlName="wishInReturn"
+          placeholder="Describe what you want in return"
+        ></textarea>
+        @if (hasError('wishInReturn', 'required')) {
+        <p class="error">This field is required.</p>
+        }
+      </div>
+
+      @if (errorMessage()) {
+      <p class="server-error">{{ errorMessage() }}</p>
+      }
+
+      <button class="primary" type="submit" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Creating...' : 'Create Notice' }}
+      </button>
+    </form>
+  </div>
+</div>

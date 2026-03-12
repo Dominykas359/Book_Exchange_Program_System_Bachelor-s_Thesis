@@ -3,10 +3,30 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
 
-  { path: 'login', loadComponent: () => import('./features/auth/login/login').then(m => m.Login) },
-  { path: 'register', loadComponent: () => import('./features/auth/register/register').then(m => m.Register) },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/login/login').then(m => m.Login)
+  },
 
-  { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard) },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./features/auth/register/register').then(m => m.Register)
+  },
 
-  { path: '**', redirectTo: 'login' },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./features/dashboard/dashboard').then(m => m.Dashboard)
+  },
+
+  {
+    path: 'create',
+    loadComponent: () =>
+      import('./features/create-notice-page/create-notice-page')
+        .then(m => m.CreateNoticePageComponent)
+  },
+
+  { path: '**', redirectTo: 'login' }
 ];

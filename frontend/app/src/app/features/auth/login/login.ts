@@ -4,6 +4,8 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 
+import { AuthenticationResponseDto } from '../../../core/models/user.model';
+
 @Component({
   standalone: true,
   selector: 'app-login',
@@ -12,6 +14,7 @@ import { HttpClient, HttpClientModule, HttpErrorResponse } from '@angular/common
   styleUrl: './login.scss',
 })
 export class Login {
+
   private apiUrl = 'http://localhost:8080';
 
   isSubmitting = signal(false);
@@ -31,22 +34,40 @@ export class Login {
   }
 
   submit() {
+
     if (this.isSubmitting() || this.form.invalid) return;
 
     this.isSubmitting.set(true);
     this.serverError.set('');
 
-    this.http.post(`${this.apiUrl}/auth/login`, this.form.getRawValue()).subscribe({
-      next: (res: any) => {
-        // If your backend returns token:
-        // localStorage.setItem('token', res.token);
+    this.http.post<AuthenticationResponseDto>(
+      `${this.apiUrl}/auth/login`,
+      this.form.getRawValue()
+    ).subscribe({
 
-        this.router.navigateByUrl('/dashboard'); // change to /dashboard when you add it
+      next: (res) => {
+
+        // Save token
+        localStorage.setItem('token', res.token);
+
+        // Save user data
+        const user = {
+          id: res.id,
+          email: res.email,
+          firstName: res.firstName,
+          lastName: res.lastName
+        };
+
+        localStorage.setItem('user', JSON.stringify(user));
+
+        this.router.navigateByUrl('/dashboard');
       },
+
       error: (err: HttpErrorResponse) => {
         this.serverError.set(err.error?.message ?? 'Login failed.');
         this.isSubmitting.set(false);
       },
+
       complete: () => this.isSubmitting.set(false),
     });
   }

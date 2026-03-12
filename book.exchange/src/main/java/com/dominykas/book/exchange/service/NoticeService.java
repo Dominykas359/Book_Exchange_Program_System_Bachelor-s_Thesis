@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +39,32 @@ public class NoticeService {
         Notice saved = noticeRepository.save(notice);
         return NoticeMapper.toDto(saved);
     }
-}
 
+    public List<NoticeResponseDTO> getAllNotices() {
+        return noticeRepository.findAll()
+                .stream()
+                .map(NoticeMapper::toDto)
+                .toList();
+    }
+
+    public NoticeResponseDTO getNoticeById(Long id) {
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Notice not found: " + id));
+
+        return NoticeMapper.toDto(notice);
+    }
+
+    public NoticeResponseDTO getNoticeByPublicationId(Long publicationId) {
+        Notice notice = noticeRepository.findByPublicationId(publicationId)
+                .orElseThrow(() -> new RuntimeException("Notice not found for publication id: " + publicationId));
+
+        return NoticeMapper.toDto(notice);
+    }
+
+    public List<NoticeResponseDTO> getNoticesByPosterId(Long posterId) {
+        return noticeRepository.findAllByPosterId(posterId)
+                .stream()
+                .map(NoticeMapper::toDto)
+                .toList();
+    }
+}

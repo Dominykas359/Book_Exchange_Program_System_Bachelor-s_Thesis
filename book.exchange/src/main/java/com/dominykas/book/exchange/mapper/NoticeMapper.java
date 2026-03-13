@@ -11,6 +11,7 @@ public class NoticeMapper {
     public static Notice fromDto(NoticeRequestDTO noticeRequestDTO) {
         Notice notice = new Notice();
         notice.setTimePosted(noticeRequestDTO.getTimePosted());
+        notice.setWishInReturn(noticeRequestDTO.getWishInReturn());
         return notice;
     }
 
@@ -18,6 +19,7 @@ public class NoticeMapper {
         NoticeResponseDTO noticeResponseDTO = new NoticeResponseDTO();
         noticeResponseDTO.setId(notice.getId());
         noticeResponseDTO.setTimePosted(notice.getTimePosted());
+        noticeResponseDTO.setWishInReturn(notice.getWishInReturn());
         noticeResponseDTO.setPoster(UserMapper.toDto(notice.getPoster()));
         noticeResponseDTO.setPublication(PublicationMapper.toDto(notice.getPublication()));
 

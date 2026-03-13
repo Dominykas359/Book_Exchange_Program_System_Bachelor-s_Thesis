@@ -29,7 +29,6 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponseDTO> login(
             @RequestBody LoginRequestDTO request
     ){
-        System.out.println("LOGIN CONTROLLER HIT");
         return ResponseEntity.ok(authenticationService.login(request));
     }
 

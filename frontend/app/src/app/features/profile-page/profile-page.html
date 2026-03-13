@@ -1,1 +1,118 @@
-<p>profile-page works!</p>
+<div class="profile-page">
+  <div class="page-header">
+    <h1 class="title">Profile</h1>
+    <p class="subtitle">Manage your personal information and account security.</p>
+  </div>
+
+  <div class="profile-grid">
+    <section class="panel">
+      <h2>Personal Information</h2>
+
+      <form [formGroup]="infoForm" (ngSubmit)="saveInfo()" class="form">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" formControlName="email" (blur)="checkEmail()" />
+          @if (hasInfoError('email', 'required')) {
+          <p class="error">Email is required.</p>
+          }
+          @if (hasInfoError('email', 'email')) {
+          <p class="error">Enter a valid email.</p>
+          }
+          @if (emailError().errorType === ErrorType.EmailRegistered) {
+          <p class="error">{{ emailError().message }}</p>
+          }
+        </div>
+
+        <div class="field">
+          <label>First name</label>
+          <input type="text" formControlName="firstName" />
+          @if (hasInfoError('firstName', 'required')) {
+          <p class="error">First name is required.</p>
+          }
+        </div>
+
+        <div class="field">
+          <label>Last name</label>
+          <input type="text" formControlName="lastName" />
+          @if (hasInfoError('lastName', 'required')) {
+          <p class="error">Last name is required.</p>
+          }
+        </div>
+
+        @if (infoError()) {
+        <p class="server-error">{{ infoError() }}</p>
+        }
+
+        @if (infoSuccess()) {
+        <p class="server-success">{{ infoSuccess() }}</p>
+        }
+
+        <button class="primary" type="submit" [disabled]="isSavingInfo()">
+          {{ isSavingInfo() ? 'Saving...' : 'Save' }}
+        </button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Password Change</h2>
+
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="form">
+        <div class="field">
+          <label>New password</label>
+          <input type="password" formControlName="password" (input)="handlePasswordValidation()" />
+          @if (hasPasswordFieldError('password', 'required')) {
+          <p class="error">Password is required.</p>
+          }
+        </div>
+
+        <div class="field">
+          <label>Confirm new password</label>
+          <input type="password" formControlName="confirmPassword" (input)="handlePasswordValidation()" />
+          @if (hasPasswordFieldError('confirmPassword', 'required')) {
+          <p class="error">Please confirm the password.</p>
+          }
+        </div>
+
+        @if (passwordError().message && passwordError().errorType !== ErrorType.NoError) {
+        <p class="error">{{ passwordError().message }}</p>
+        }
+
+        @if (passwordSuccess()) {
+        <p class="server-success">{{ passwordSuccess() }}</p>
+        }
+
+        <button class="secondary" type="submit" [disabled]="isChangingPassword()">
+          {{ isChangingPassword() ? 'Changing...' : 'Change Password' }}
+        </button>
+      </form>
+
+      <div class="danger-zone">
+        <h3>Danger Zone</h3>
+
+        @if (deleteError()) {
+        <p class="server-error">{{ deleteError() }}</p>
+        }
+
+        <button class="danger" type="button" (click)="openDeleteConfirm()">
+          Delete Account
+        </button>
+      </div>
+    </section>
+  </div>
+
+  @if (showDeleteConfirm()) {
+  <div class="modal-backdrop" (click)="closeDeleteConfirm()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>Delete account</h3>
+      <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+
+      <div class="modal-actions">
+        <button type="button" class="ghost" (click)="closeDeleteConfirm()">Cancel</button>
+        <button type="button" class="danger" (click)="confirmDelete()" [disabled]="isDeleting()">
+          {{ isDeleting() ? 'Deleting...' : 'Delete' }}
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>

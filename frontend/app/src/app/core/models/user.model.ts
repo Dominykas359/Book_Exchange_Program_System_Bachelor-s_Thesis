@@ -8,3 +8,13 @@ export interface UserResponseDto {
 export interface AuthenticationResponseDto extends UserResponseDto {
   token: string;
 }
+
+export interface UserUpdateRequestDto {
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface ChangePasswordRequestDto {
+  password: string;
+}

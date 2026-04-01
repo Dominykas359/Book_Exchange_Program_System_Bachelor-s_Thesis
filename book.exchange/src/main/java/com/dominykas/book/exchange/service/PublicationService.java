@@ -11,6 +11,9 @@ import com.dominykas.book.exchange.repository.PublicationSearchRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,20 +26,28 @@ public class PublicationService {
     private final EmbeddingService embeddingService;
     private final PublicationEmbeddingRepository embeddingRepository;
     private final PublicationSearchRepository publicationSearchRepository;
+    private final ExecutorService embeddingExecutor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-    @Transactional
     public PublicationResponseDTO createPublication(PublicationRequestDTO publicationRequestDTO) {
 
         Publication publication = PublicationMapper.fromDto(publicationRequestDTO);
         publication = publicationRepository.save(publication);
+        final Long publicationId = publication.getId();
 
         try {
             String text = buildEmbeddingText(publication);
 
-            for (String modelKey : List.of("bert", "distilbert", "roberta")) {
-                List<Double> vec = embeddingService.embed(text, modelKey);
-                embeddingRepository.updateEmbedding(publication.getId(), modelKey, vec);
-            }
+            List<CompletableFuture<Void>> futures = List.of("bert", "distilbert", "roberta")
+                    .stream()
+                    .map(modelKey ->
+                            CompletableFuture.runAsync(() -> {
+                                List<Double> vec = embeddingService.embed(text, modelKey);
+                                embeddingRepository.updateEmbedding(publicationId, modelKey, vec);
+                            }, embeddingExecutor)
+                    )
+                    .toList();
+
+            CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

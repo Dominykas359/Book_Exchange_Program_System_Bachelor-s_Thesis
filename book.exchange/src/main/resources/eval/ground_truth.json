@@ -1,215 +1,131 @@
 [
   {
-    "query": "books about a mutated monster hunter named Geralt called a witcher in a brutal fantasy world",
-    "relevant": [
-      1329,
-      2335,
-      2688,
-      3254,
-      3978,
-      4058,
-      5007,
-      14754,
-      16644
-    ]
+    "query": "a sea captain obsessed with hunting a giant white whale that destroyed his ship",
+    "relevant": [7504, 8541, 8573]
   },
   {
-    "query": "dark fantasy saga where Geralt navigates war politics and moral choices across kingdoms",
-    "relevant": [
-      1329,
-      2335,
-      2688,
-      3254,
-      3978,
-      4058,
-      5007,
-      14754,
-      16644
-    ]
+    "query": "a whaling voyage where the captain drives his crew across the ocean chasing a white whale",
+    "relevant": [8925, 1170, 7504]
   },
   {
-    "query": "short story collections following Geralt's early adventures and contracts",
-    "relevant": [
-      1329,
-      2335,
-      16644
-    ]
+    "query": "books about whales dangerous sea voyages and sailors confronting the ocean",
+    "relevant": [5837, 3772]
   },
   {
-    "query": "the witcher short stories before the main saga begins",
-    "relevant": [
-      1329,
-      2335,
-      16644
-    ]
+    "query": "stories about ships sailors and encounters with whales and sea creatures",
+    "relevant": [5837, 13160]
   },
   {
-    "query": "witcher saga novels about war between humans and other races and fragile alliances",
-    "relevant": [
-      2335,
-      2688,
-      3254,
-      3978,
-      4058,
-      5007
-    ]
+    "query": "maritime adventures about whaling ships and dangerous ocean hunts",
+    "relevant": [5837, 3772, 9593, 14577, 13072]
   },
   {
-    "query": "stories where Geralt Yennefer and Ciri are separated by war and fate",
-    "relevant": [
-      3978,
-      5007
-    ]
+    "query": "novels about obsession revenge and a legendary white whale",
+    "relevant": [7504, 14577, 9593, 5907]
   },
   {
-    "query": "books featuring Ciri and her destiny while Geralt searches for her",
-    "relevant": [
-      3254,
-      3978,
-      4058,
-      5007
-    ]
+    "query": "stories centered on whaling voyages and the dangers of the sea",
+    "relevant": [5837, 3772, 14577]
   },
   {
-    "query": "witcher books about Ciri fleeing enemies and traveling through dangerous lands",
-    "relevant": [
-      3254,
-      3978,
-      4058,
-      5007
-    ]
+    "query": "books involving whale encounters sailors and long ocean journeys",
+    "relevant": [4168, 5837, 9593, 1032]
   },
   {
-    "query": "books where Yennefer appears and magic politics surround her relationship with Geralt",
-    "relevant": [
-      3978,
-      5007,
-      14754,
-      16644
-    ]
+    "query": "a pilot stranded in a desert meets a mysterious boy from another planet",
+    "relevant": [2969, 15001]
   },
   {
-    "query": "witcher stories involving sorceresses and secret magical factions manipulating kingdoms",
-    "relevant": [
-      3254,
-      3978,
-      5007
-    ]
+    "query": "a philosophical fable about an aviator befriending a child from a tiny asteroid",
+    "relevant": [2969, 15001, 2479, 8734, 8452]
   },
   {
-    "query": "fantasy books about portals other worlds and Ciri trying to survive after escaping death",
-    "relevant": [
-      4058,
-      5007
-    ]
+    "query": "a poetic story where a stranded pilot talks with a boy who visited many small planets",
+    "relevant": [2969, 15001]
   },
   {
-    "query": "books about a white haired monster slayer and a sorceress named Yennefer",
-    "relevant": [
-      3978,
-      14754,
-      16644,
-      5007
-    ]
+    "query": "a symbolic novella about a traveler from space teaching an adult about friendship and life",
+    "relevant": [8734, 13798, 8832]
   },
   {
-    "query": "witcher book set outside the main saga focusing on Geralt between earlier adventures",
-    "relevant": [
-      14754,
-      1329
-    ]
+    "query": "a desert meeting between a crashed pilot and a child from the stars",
+    "relevant": [2969, 15001]
   },
   {
-    "query": "polish witcher books by Andrzej Sapkowski including the saga and story collections",
-    "relevant": [
-      2335,
-      3254,
-      3978,
-      4058,
-      5007,
-      14754,
-      16644
-    ]
+    "query": "a gentle philosophical story about a child from another world explaining the strange habits of adults",
+    "relevant": [2969, 15001]
   },
   {
-    "query": "english editions of the witcher featuring Geralt and the wars of the continent",
-    "relevant": [
-      1329,
-      2688,
-      4058
-    ]
+    "query": "an aviator in the desert hears stories from a boy who visited strange planets",
+    "relevant": [2969, 15001]
   },
   {
-    "query": "books with Geralt as an outsider who chooses between neutrality and protecting others",
-    "relevant": [
-      1329,
-      2335,
-      2688,
-      3254,
-      3978,
-      4058,
-      5007,
-      14754,
-      16644
-    ]
+    "query": "a story about a child from a tiny planet exploring human nature and friendship",
+    "relevant": [2969, 15001]
+  },
+
+  {
+    "query": "Geralt of Rivia short stories introducing the witcher world with Yennefer and Dandelion",
+    "relevant": [15002, 15003]
   },
   {
-    "query": "fantasy books with monsters curses and twisted fairy tale style encounters",
-    "relevant": [
-      1329,
-      2335,
-      16644
-    ]
+    "query": "The Witcher collection of interconnected short stories about Geralt before the main saga",
+    "relevant": [15002, 15003]
   },
   {
-    "query": "witcher books about the lodge of sorceresses and secret political plots",
-    "relevant": [
-      3254,
-      3978
-    ]
+    "query": "Geralt of Rivia Yennefer djinn and the wish that links their fate",
+    "relevant": [15002]
   },
   {
-    "query": "books about destiny prophecy and the child of surprise in the witcher universe",
-    "relevant": [
-      2335,
-      2688,
-      3978,
-      4058,
-      5007
-    ]
+    "query": "witcher stories where Geralt meets Ciri and destiny is tied through the Law of Surprise",
+    "relevant": [15003]
   },
   {
-    "query": "witcher books where Geralt faces war and betrayal while searching for his family",
-    "relevant": [
-      2688,
-      3254,
-      3978,
-      5007,
-      4058
-    ]
+    "query": "Ciri training at Kaer Morhen with Geralt and discovering Elder Blood powers",
+    "relevant": [15004]
   },
   {
-    "query": "books about Geralt the witcher and the uneasy peace between races breaking into war",
-    "relevant": [
-      2688,
-      3254,
-      3978,
-      5007,
-      4058
-    ]
+    "query": "the Witcher novel where Yennefer trains Ciri and kingdoms begin searching for her bloodline",
+    "relevant": [15004]
   },
   {
-    "query": "fantasy books set in the witcher world with swordplay monsters and grim humor",
-    "relevant": [
-      1329,
-      2335,
-      2688,
-      3254,
-      3978,
-      4058,
-      5007,
-      14754,
-      16644
-    ]
+    "query": "Thanedd coup mages betrayal Geralt injured and Ciri lost in the desert",
+    "relevant": [15005]
+  },
+  {
+    "query": "Witcher book where political conspiracies erupt at Thanedd and Ciri joins the Rats",
+    "relevant": [15005]
+  },
+  {
+    "query": "Geralt travels across a war torn continent with Milva Regis Cahir and Dandelion searching for Ciri",
+    "relevant": [15006]
+  },
+  {
+    "query": "the Witcher novel focused on Geralt's fellowship journey during the Nilfgaard war",
+    "relevant": [15006]
+  },
+  {
+    "query": "Ciri recovering with Vysogota while fleeing Leo Bonhart and the Lodge of Sorceresses hunts her",
+    "relevant": [15007]
+  },
+  {
+    "query": "Witcher novel centered on Ciri in hiding after betrayal with Bonhart as her pursuer",
+    "relevant": [15007]
+  },
+  {
+    "query": "final Witcher saga novel where Ciri travels across worlds and the war reaches its conclusion",
+    "relevant": [15008]
+  },
+  {
+    "query": "Geralt Yennefer and Ciri concluding the main Witcher saga in a bittersweet ending",
+    "relevant": [15008]
+  },
+  {
+    "query": "standalone Witcher prequel where Geralt's swords are stolen and he investigates magical intrigue",
+    "relevant": [15009]
+  },
+  {
+    "query": "early Geralt of Rivia adventure about stolen witcher swords before the main saga",
+    "relevant": [15009]
   }
 ]

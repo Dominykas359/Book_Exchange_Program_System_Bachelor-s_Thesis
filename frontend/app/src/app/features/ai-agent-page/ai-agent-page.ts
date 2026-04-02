@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { forkJoin, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
 import { AiChatMessage } from '../../core/models/ai-chat.model';
 import { NoticeResponseDto } from '../../core/models/notice.model';
 import { PublicationSearchResultDto } from '../../core/models/publication.model';
+import { SettingsResponseDto } from '../../core/models/settings.model';
 import { NoticeService } from '../../core/services/notice.service';
 import { PublicationService } from '../../core/services/publication.service';
+import { SettingsService } from '../../core/services/settings.service';
 import { NoticeCardComponent } from '../../shared/components/notice-card/notice-card';
 import { NoticeModalComponent } from '../../shared/components/notice-modal/notice-modal';
 
@@ -18,17 +20,24 @@ import { NoticeModalComponent } from '../../shared/components/notice-modal/notic
   templateUrl: './ai-agent-page.html',
   styleUrl: './ai-agent-page.scss',
 })
-export class AiAgentPage {
+export class AiAgentPage implements OnInit {
   private readonly publicationService = inject(PublicationService);
   private readonly noticeService = inject(NoticeService);
+  private readonly settingsService = inject(SettingsService);
 
+  readonly settings = signal<SettingsResponseDto | null>(null);
   readonly messages = signal<AiChatMessage[]>([]);
   readonly query = signal('');
   readonly isLoading = signal(false);
+  readonly isLoadingSettings = signal(false);
   readonly errorMessage = signal('');
   readonly selectedNotice = signal<NoticeResponseDto | null>(null);
 
   readonly hasMessages = computed(() => this.messages().length > 0);
+
+  ngOnInit(): void {
+    this.loadSettings();
+  }
 
   updateQuery(value: string): void {
     this.query.set(value);
@@ -54,7 +63,14 @@ export class AiAgentPage {
     this.query.set('');
     this.isLoading.set(true);
 
-    this.publicationService.search(trimmedQuery).subscribe({
+    const currentSettings = this.settings();
+
+    this.publicationService.search(
+      trimmedQuery,
+      currentSettings?.preferredModelKey ?? 'roberta',
+      currentSettings?.defaultSearchLimit ?? 10,
+      currentSettings?.defaultMinScore ?? 0.45
+    ).subscribe({
       next: (results) => {
         this.loadNoticesFromResults(trimmedQuery, results);
       },
@@ -97,6 +113,59 @@ export class AiAgentPage {
 
   trackByNoticeId(_: number, notice: NoticeResponseDto): number {
     return notice.id;
+  }
+
+  private loadSettings(): void {
+    const userId = this.getUserId();
+
+    if (!userId) {
+      console.warn('No valid userId found in localStorage. Using default AI search settings.');
+      return;
+    }
+
+    this.isLoadingSettings.set(true);
+
+    this.settingsService.getSettings(userId).subscribe({
+      next: (settings) => {
+        this.settings.set(settings);
+        this.isLoadingSettings.set(false);
+      },
+      error: (error) => {
+        console.error('Failed to load settings. Using defaults.', error);
+        this.isLoadingSettings.set(false);
+      },
+    });
+  }
+
+  private getUserId(): number | null {
+    const userIdRaw = localStorage.getItem('userId');
+
+    if (userIdRaw) {
+      const parsedUserId = Number(userIdRaw);
+
+      if (Number.isInteger(parsedUserId) && parsedUserId > 0) {
+        return parsedUserId;
+      }
+    }
+
+    const userRaw = localStorage.getItem('user');
+
+    if (!userRaw) {
+      return null;
+    }
+
+    try {
+      const user = JSON.parse(userRaw) as { id?: number };
+      const parsedUserId = Number(user.id);
+
+      if (Number.isInteger(parsedUserId) && parsedUserId > 0) {
+        return parsedUserId;
+      }
+
+      return null;
+    } catch {
+      return null;
+    }
   }
 
   private loadNoticesFromResults(query: string, results: PublicationSearchResultDto[]): void {

@@ -1,1 +1,149 @@
-<p>settings-page works!</p>
+<div class="settings-page">
+  <div class="page-header">
+    <div>
+      <h1 class="title">Search settings</h1>
+      <p class="subtitle">
+        Choose the semantic model, matching strictness, and number of results returned for search.
+      </p>
+    </div>
+  </div>
+
+  <div class="settings-layout">
+    <section class="settings-card">
+      <div class="section-header">
+        <h2>Model</h2>
+        <p>Select the semantic model used to find matching publications.</p>
+      </div>
+
+      <div class="model-list">
+        @for (model of modelOptions; track trackByModelKey($index, model)) {
+        <button
+          type="button"
+          class="model-card"
+          [class.model-card--active]="selectedModel() === model.key"
+          (click)="updateModel(model.key)">
+          <div class="model-card__top">
+            <div>
+              <h3>{{ model.label }}</h3>
+              <p>{{ model.description }}</p>
+            </div>
+
+            @if (selectedModel() === model.key) {
+            <span class="selected-badge">Selected</span>
+            }
+          </div>
+        </button>
+        }
+      </div>
+
+      <div class="info-box">
+        <strong>What this changes:</strong>
+        <p>
+          The model affects how the system understands natural language and which publications are
+          treated as semantically similar to the user's query.
+        </p>
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <div class="section-header">
+        <h2>Strictness</h2>
+        <p>Control how closely publications must match the query semantically.</p>
+      </div>
+
+      <div class="strictness-panel">
+        <div class="strictness-label-row">
+          <span class="strictness-value">{{ strictness() }}</span>
+          <span class="strictness-pill">{{ strictnessLabel() }}</span>
+        </div>
+
+        <input
+          class="strictness-slider"
+          type="range"
+          min="0"
+          max="100"
+          step="1"
+          [ngModel]="strictness()"
+          (ngModelChange)="updateStrictness($event)" />
+
+        <div class="strictness-scale">
+          <span>Loose</span>
+          <span>Balanced</span>
+          <span>Strict</span>
+        </div>
+
+        <div class="info-box">
+          <strong>What this changes:</strong>
+          <p>{{ strictnessDescription() }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <div class="section-header">
+        <h2>Results count</h2>
+        <p>Choose how many semantic matches should be returned for each query.</p>
+      </div>
+
+      <div class="result-options">
+        @for (count of resultCountOptions; track count) {
+        <button
+          type="button"
+          class="count-chip"
+          [class.count-chip--active]="resultsCount() === count"
+          (click)="updateResultsCount(count)">
+          {{ count }}
+        </button>
+        }
+      </div>
+
+      <div class="info-box">
+        <strong>What this changes:</strong>
+        <p>
+          Fewer results keep the response more focused. More results give users more choice, but the
+          lower-ranked items may be less relevant.
+        </p>
+      </div>
+    </section>
+
+    <section class="settings-card settings-card--summary">
+      <div class="section-header">
+        <h2>Current selection</h2>
+        <p>Your active semantic search configuration.</p>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-item">
+          <span>Model</span>
+          <strong>{{ selectedModelInfo().label }}</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Strictness</span>
+          <strong>{{ strictness() }} — {{ strictnessLabel() }}</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Returned results</span>
+          <strong>{{ resultsCount() }}</strong>
+        </div>
+      </div>
+
+      <div class="summary-description">
+        <p>
+          <strong>{{ selectedModelInfo().label }}</strong> is currently selected.
+          {{ selectedModelInfo().description }}
+        </p>
+      </div>
+
+      <div class="actions">
+        <button class="secondary-btn" type="button" (click)="resetDefaults()">Reset defaults</button>
+        <button class="primary-btn" type="button" (click)="saveSettings()">Save settings</button>
+      </div>
+
+      @if (saveMessage()) {
+      <p class="save-message">{{ saveMessage() }}</p>
+      }
+    </section>
+  </div>
+</div>

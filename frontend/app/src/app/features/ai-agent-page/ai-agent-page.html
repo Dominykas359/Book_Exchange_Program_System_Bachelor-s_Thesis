@@ -1,1 +1,109 @@
-<p>ai-agent-page works!</p>
+<div class="ai-agent-page">
+  <div class="page-header">
+    <div>
+      <h1 class="title">AI Agent</h1>
+      <p class="subtitle">Ask for books in natural language and get semantic matches.</p>
+    </div>
+
+    <button
+      class="clear-btn"
+      type="button"
+      (click)="clearChat()"
+      [disabled]="!hasMessages() || isLoading()">
+      Clear chat
+    </button>
+  </div>
+
+  <div class="chat-panel">
+    @if (!hasMessages()) {
+    <div class="empty-state">
+      <h2>Start a conversation</h2>
+      <p>Try something like “short fantasy books”, “romantic novels”, or “books for beginners in English”.</p>
+    </div>
+    }
+
+    @for (message of messages(); track trackByMessageId($index, message)) {
+    <div
+      class="message"
+      [class.message--user]="message.role === 'user'"
+      [class.message--assistant]="message.role === 'assistant'">
+
+      <div class="message-bubble">
+        <div class="message-meta">
+            <span class="message-role">
+              {{ message.role === 'user' ? 'You' : 'Assistant' }}
+            </span>
+          <span class="message-time">
+              {{ message.createdAt | date:'yyyy-MM-dd HH:mm' }}
+            </span>
+        </div>
+
+        <p class="message-text">{{ message.text }}</p>
+
+        @if (message.role === 'assistant' && message.notices && message.notices.length > 0) {
+        <div class="results-list">
+          @for (notice of message.notices; track trackByNoticeId($index, notice)) {
+          <app-notice-card
+            [notice]="notice"
+            (cardClick)="openNotice(notice)">
+          </app-notice-card>
+          }
+        </div>
+        }
+
+        @if (message.role === 'assistant' && message.notices && message.notices.length === 0) {
+        <div class="no-results-card">
+          <p>No matching notices found.</p>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
+    @if (isLoading()) {
+    <div class="message message--assistant">
+      <div class="message-bubble">
+        <div class="message-meta">
+          <span class="message-role">Assistant</span>
+        </div>
+
+        <p class="message-text">Searching semantically...</p>
+      </div>
+    </div>
+    }
+  </div>
+
+  <div class="composer-card">
+    <label class="composer-label" for="query">Your query</label>
+
+    <textarea
+      id="query"
+      class="composer-input"
+      rows="4"
+      placeholder="Describe the kind of book you are looking for..."
+      [value]="query()"
+      (input)="updateQuery($any($event.target).value)"
+      [disabled]="isLoading()"></textarea>
+
+    @if (errorMessage()) {
+    <p class="error-text">{{ errorMessage() }}</p>
+    }
+
+    <div class="composer-actions">
+      <button
+        class="send-btn"
+        type="button"
+        (click)="sendMessage()"
+        [disabled]="!query().trim() || isLoading()">
+        Send
+      </button>
+    </div>
+  </div>
+
+  @if (selectedNotice(); as notice) {
+  <app-notice-modal
+    [notice]="notice"
+    (close)="closeModal()">
+  </app-notice-modal>
+  }
+</div>

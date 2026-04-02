@@ -1,0 +1,11 @@
+<button class="notice-card" type="button" (click)="onClick()">
+  <div class="notice-card__content">
+    <h2>{{ notice.publication.title }}</h2>
+
+    <div class="meta-list">
+      <p><span>Author:</span> {{ notice.publication.author }}</p>
+      <p><span>Release year:</span> {{ getReleaseYear(notice.publication.releaseYear) }}</p>
+      <p><span>Posted by:</span> {{ getPosterFullName() }}</p>
+    </div>
+  </div>
+</button>

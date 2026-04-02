@@ -3,7 +3,9 @@ package com.dominykas.book.exchange.service;
 import com.dominykas.book.exchange.dto.userDTO.AuthenticationResponseDTO;
 import com.dominykas.book.exchange.dto.userDTO.LoginRequestDTO;
 import com.dominykas.book.exchange.dto.userDTO.UserRequestDTO;
+import com.dominykas.book.exchange.entity.Settings;
 import com.dominykas.book.exchange.entity.User;
+import com.dominykas.book.exchange.repository.SettingsRepository;
 import com.dominykas.book.exchange.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +24,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final SettingsRepository settingsRepository;
 
     @Transactional
     public AuthenticationResponseDTO register(UserRequestDTO request) {
@@ -32,8 +35,22 @@ public class AuthenticationService {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .build();
-        userRepository.save(user);
+
+        user = userRepository.save(user);
+
+        Settings settings = new Settings();
+        settings.setUser(user);
+        settings.setTheme("light");
+        settings.setLanguage("en");
+        settings.setEmailNotifications(true);
+        settings.setPreferredModelKey("bert");
+        settings.setDefaultSearchLimit(10);
+        settings.setDefaultMinScore(0.50);
+
+        settingsRepository.save(settings);
+
         var jwtToken = jwtService.generateToken(user);
+
         return AuthenticationResponseDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())

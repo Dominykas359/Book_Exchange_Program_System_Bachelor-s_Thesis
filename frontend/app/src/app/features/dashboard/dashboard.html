@@ -25,102 +25,18 @@
   @if (!isLoading() && notices().length > 0) {
   <div class="card-grid">
     @for (notice of notices(); track notice.id) {
-    <button class="notice-card" type="button" (click)="openNotice(notice)">
-      <div class="notice-card__content">
-        <h2>{{ notice.publication.title }}</h2>
-
-        <div class="meta-list">
-          <p><span>Author:</span> {{ notice.publication.author }}</p>
-          <p><span>Release year:</span> {{ getReleaseYear(notice.publication.releaseYear) }}</p>
-          <p><span>Posted by:</span> {{ getPosterFullName(notice) }}</p>
-        </div>
-      </div>
-    </button>
+    <app-notice-card
+      [notice]="notice"
+      (cardClick)="openNotice($event)">
+    </app-notice-card>
     }
   </div>
   }
 
   @if (selectedNotice(); as notice) {
-  <div class="modal-backdrop" (click)="onBackdropClick($event)">
-    <div class="modal">
-      <div class="modal-header">
-        <div>
-          <h2>{{ notice.publication.title }}</h2>
-          <p>{{ notice.publication.author }}</p>
-        </div>
-
-        <button class="close-btn" type="button" (click)="closeModal()">×</button>
-      </div>
-
-      <div class="modal-body">
-        <div class="info-grid">
-          <div class="info-item">
-            <span>Title</span>
-            <p>{{ notice.publication.title }}</p>
-          </div>
-
-          <div class="info-item">
-            <span>Author</span>
-            <p>{{ notice.publication.author }}</p>
-          </div>
-
-          <div class="info-item">
-            <span>Release year</span>
-            <p>{{ notice.publication.releaseYear }}</p>
-          </div>
-
-          <div class="info-item">
-            <span>Language</span>
-            <p>{{ notice.publication.language }}</p>
-          </div>
-
-          <div class="info-item">
-            <span>Page count</span>
-            <p>{{ notice.publication.pageCount }}</p>
-          </div>
-
-          <div class="info-item">
-            <span>Cover</span>
-            <p>{{ notice.publication.cover || '-' }}</p>
-          </div>
-
-          <div class="info-item">
-            <span>Colored</span>
-            <p>{{ notice.publication.colored ? 'Yes' : 'No' }}</p>
-          </div>
-
-          <div class="info-item">
-            <span>Edition number</span>
-            <p>{{ notice.publication.editionNumber || '-' }}</p>
-          </div>
-
-          <div class="info-item">
-            <span>Posted by</span>
-            <p>{{ getPosterFullName(notice) }}</p>
-          </div>
-
-          <div class="info-item">
-            <span>Poster email</span>
-            <p>{{ notice.poster.email }}</p>
-          </div>
-
-          <div class="info-item">
-            <span>Time posted</span>
-            <p>{{ notice.timePosted }}</p>
-          </div>
-
-          <div class="info-item">
-            <span>Wish in return</span>
-            <p>{{ notice.wishInReturn }}</p>
-          </div>
-        </div>
-
-        <div class="description-block">
-          <span>Description</span>
-          <p>{{ notice.publication.description }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-notice-modal
+    [notice]="notice"
+    (close)="closeModal()">
+  </app-notice-modal>
   }
 </div>

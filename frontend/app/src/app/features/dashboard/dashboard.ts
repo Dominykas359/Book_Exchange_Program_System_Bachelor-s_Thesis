@@ -2,11 +2,13 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NoticeService } from '../../core/services/notice.service';
 import { NoticeResponseDto } from '../../core/models/notice.model';
+import { NoticeCardComponent } from '../../shared/components/notice-card/notice-card';
+import { NoticeModalComponent } from '../../shared/components/notice-modal/notice-modal';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NoticeCardComponent, NoticeModalComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
@@ -45,23 +47,5 @@ export class Dashboard implements OnInit {
 
   closeModal(): void {
     this.selectedNotice.set(null);
-  }
-
-  getReleaseYear(date: string | undefined): string {
-    if (!date) return '-';
-    return date.split('-')[0];
-  }
-
-  getPosterFullName(notice: NoticeResponseDto): string {
-    const firstName = notice.poster?.firstName ?? '';
-    const lastName = notice.poster?.lastName ?? '';
-    const fullName = `${firstName} ${lastName}`.trim();
-    return fullName || notice.poster?.email || 'Unknown user';
-  }
-
-  onBackdropClick(event: MouseEvent): void {
-    if (event.target === event.currentTarget) {
-      this.closeModal();
-    }
   }
 }

@@ -1,5 +1,7 @@
 package com.dominykas.book.exchange.controller;
 
+import com.dominykas.book.exchange.dto.noticeDTO.PageResponseDTO;
+import com.dominykas.book.exchange.dto.noticeDTO.NoticeFilterDTO;
 import com.dominykas.book.exchange.dto.noticeDTO.NoticeRequestDTO;
 import com.dominykas.book.exchange.dto.noticeDTO.NoticeResponseDTO;
 import com.dominykas.book.exchange.dto.publicationDTO.PublicationRequestDTO;
@@ -11,9 +13,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,8 +40,43 @@ public class NoticeController {
     }
 
     @GetMapping
-    public List<NoticeResponseDTO> getAllNotices() {
-        return noticeService.getAllNotices();
+    public PageResponseDTO<NoticeResponseDTO> getNotices(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "timePosted") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDir,
+            @RequestParam(required = false) Long posterId,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String language,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate releaseYearFrom,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate releaseYearTo,
+            @RequestParam(required = false) Integer minPageCount,
+            @RequestParam(required = false) Integer maxPageCount,
+            @RequestParam(required = false) String cover,
+            @RequestParam(required = false) Boolean colored,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate postedFrom,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate postedTo
+    ) {
+        NoticeFilterDTO filter = new NoticeFilterDTO();
+        filter.setPosterId(posterId);
+        filter.setTitle(title);
+        filter.setAuthor(author);
+        filter.setLanguage(language);
+        filter.setReleaseYearFrom(releaseYearFrom);
+        filter.setReleaseYearTo(releaseYearTo);
+        filter.setMinPageCount(minPageCount);
+        filter.setMaxPageCount(maxPageCount);
+        filter.setCover(cover);
+        filter.setColored(colored);
+        filter.setPostedFrom(postedFrom);
+        filter.setPostedTo(postedTo);
+
+        return noticeService.getNotices(page, size, sortBy, sortDir, filter);
     }
 
     @GetMapping("/{id}")
@@ -71,9 +110,7 @@ public class NoticeController {
 
         books.forEach(book ->
                 seedExecutor.submit(() -> {
-
                     try {
-
                         PublicationResponseDTO publication =
                                 publicationService.createPublication(book);
 

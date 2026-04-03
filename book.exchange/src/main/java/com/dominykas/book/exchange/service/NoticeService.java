@@ -1,5 +1,7 @@
 package com.dominykas.book.exchange.service;
 
+import com.dominykas.book.exchange.dto.noticeDTO.PageResponseDTO;
+import com.dominykas.book.exchange.dto.noticeDTO.NoticeFilterDTO;
 import com.dominykas.book.exchange.dto.noticeDTO.NoticeRequestDTO;
 import com.dominykas.book.exchange.dto.noticeDTO.NoticeResponseDTO;
 import com.dominykas.book.exchange.entity.Notice;
@@ -10,6 +12,11 @@ import com.dominykas.book.exchange.repository.NoticeRepository;
 import com.dominykas.book.exchange.repository.PublicationRepository;
 import com.dominykas.book.exchange.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -40,11 +47,51 @@ public class NoticeService {
         return NoticeMapper.toDto(saved);
     }
 
-    public List<NoticeResponseDTO> getAllNotices() {
-        return noticeRepository.findAll()
+    public PageResponseDTO<NoticeResponseDTO> getNotices(
+            int page,
+            int size,
+            String sortBy,
+            String sortDir,
+            NoticeFilterDTO filter
+    ) {
+        String mappedSortBy = mapSortBy(sortBy);
+
+        Sort sort = sortDir.equalsIgnoreCase("asc")
+                ? Sort.by(mappedSortBy).ascending()
+                : Sort.by(mappedSortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Specification<Notice> specification = Specification
+                .where(NoticeSpecification.hasPosterId(filter.getPosterId()))
+                .and(NoticeSpecification.titleContains(filter.getTitle()))
+                .and(NoticeSpecification.authorContains(filter.getAuthor()))
+                .and(NoticeSpecification.hasLanguage(filter.getLanguage()))
+                .and(NoticeSpecification.releaseYearFrom(filter.getReleaseYearFrom()))
+                .and(NoticeSpecification.releaseYearTo(filter.getReleaseYearTo()))
+                .and(NoticeSpecification.minPageCount(filter.getMinPageCount()))
+                .and(NoticeSpecification.maxPageCount(filter.getMaxPageCount()))
+                .and(NoticeSpecification.hasCover(filter.getCover()))
+                .and(NoticeSpecification.hasColored(filter.getColored()))
+                .and(NoticeSpecification.postedFrom(filter.getPostedFrom()))
+                .and(NoticeSpecification.postedTo(filter.getPostedTo()));
+
+        Page<Notice> noticePage = noticeRepository.findAll(specification, pageable);
+
+        List<NoticeResponseDTO> content = noticePage.getContent()
                 .stream()
                 .map(NoticeMapper::toDto)
                 .toList();
+
+        return new PageResponseDTO<>(
+                content,
+                noticePage.getNumber(),
+                noticePage.getSize(),
+                noticePage.getTotalElements(),
+                noticePage.getTotalPages(),
+                noticePage.isFirst(),
+                noticePage.isLast()
+        );
     }
 
     public NoticeResponseDTO getNoticeById(Long id) {
@@ -66,5 +113,13 @@ public class NoticeService {
                 .stream()
                 .map(NoticeMapper::toDto)
                 .toList();
+    }
+
+    private String mapSortBy(String sortBy) {
+        return switch (sortBy) {
+            case "id" -> "id";
+            case "timePosted" -> "timePosted";
+            default -> "timePosted";
+        };
     }
 }

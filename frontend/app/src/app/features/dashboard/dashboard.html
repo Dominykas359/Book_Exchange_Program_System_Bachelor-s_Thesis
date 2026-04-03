@@ -4,6 +4,112 @@
     <p class="subtitle">Browse all available exchange notices.</p>
   </div>
 
+  <div class="filters-card">
+    <div class="filters-header">
+      <h2 class="filters-title">Filters</h2>
+      <p class="filters-subtitle">Narrow down notices by book details.</p>
+    </div>
+
+    <div class="filters-grid">
+      <div class="filter-field">
+        <label for="titleFilter">Title</label>
+        <input
+          id="titleFilter"
+          type="text"
+          placeholder="Enter title"
+          [ngModel]="filters().title"
+          (ngModelChange)="updateTextFilter('title', $event)" />
+      </div>
+
+      <div class="filter-field">
+        <label for="authorFilter">Author</label>
+        <input
+          id="authorFilter"
+          type="text"
+          placeholder="Enter author"
+          [ngModel]="filters().author"
+          (ngModelChange)="updateTextFilter('author', $event)" />
+      </div>
+
+      <div class="filter-field">
+        <label for="languageFilter">Language</label>
+        <input
+          id="languageFilter"
+          type="text"
+          placeholder="Enter language"
+          [ngModel]="filters().language"
+          (ngModelChange)="updateTextFilter('language', $event)" />
+      </div>
+
+      <div class="filter-field">
+        <label for="releaseYearFromFilter">Release date from</label>
+        <input
+          id="releaseYearFromFilter"
+          type="date"
+          [ngModel]="filters().releaseYearFrom"
+          (ngModelChange)="updateTextFilter('releaseYearFrom', $event)" />
+      </div>
+
+      <div class="filter-field">
+        <label for="releaseYearToFilter">Release date to</label>
+        <input
+          id="releaseYearToFilter"
+          type="date"
+          [ngModel]="filters().releaseYearTo"
+          (ngModelChange)="updateTextFilter('releaseYearTo', $event)" />
+      </div>
+
+      <div class="filter-field">
+        <label for="minPageCountFilter">Minimum page count</label>
+        <input
+          id="minPageCountFilter"
+          type="number"
+          placeholder="e.g. 100"
+          [ngModel]="filters().minPageCount ?? ''"
+          (ngModelChange)="updateNumberFilter('minPageCount', $event)" />
+      </div>
+
+      <div class="filter-field">
+        <label for="maxPageCountFilter">Maximum page count</label>
+        <input
+          id="maxPageCountFilter"
+          type="number"
+          placeholder="e.g. 500"
+          [ngModel]="filters().maxPageCount ?? ''"
+          (ngModelChange)="updateNumberFilter('maxPageCount', $event)" />
+      </div>
+
+      <div class="filter-field">
+        <label for="coverFilter">Cover</label>
+        <select
+          id="coverFilter"
+          [ngModel]="filters().cover"
+          (ngModelChange)="updateTextFilter('cover', $event)">
+          <option value="">Any cover</option>
+          <option value="hard">Hard</option>
+          <option value="soft">Soft</option>
+        </select>
+      </div>
+
+      <div class="filter-field">
+        <label for="coloredFilter">Colored</label>
+        <select
+          id="coloredFilter"
+          [ngModel]="filters().colored === undefined ? '' : filters().colored ? 'true' : 'false'"
+          (ngModelChange)="updateBooleanFilter($event)">
+          <option value="">Any</option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-actions">
+      <button class="primary-btn" (click)="applyFilters()">Apply filters</button>
+      <button class="secondary-btn" (click)="clearFilters()">Clear</button>
+    </div>
+  </div>
+
   @if (isLoading()) {
   <div class="state-card">
     <p>Loading notices...</p>
@@ -30,6 +136,20 @@
       (cardClick)="openNotice($event)">
     </app-notice-card>
     }
+  </div>
+
+  <div class="pagination">
+    <button class="secondary-btn" (click)="previousPage()" [disabled]="isFirst()">
+      Previous
+    </button>
+
+    <span class="page-indicator">
+        Page {{ currentPage() + 1 }} / {{ totalPages() }}
+      </span>
+
+    <button class="secondary-btn" (click)="nextPage()" [disabled]="isLast()">
+      Next
+    </button>
   </div>
   }
 

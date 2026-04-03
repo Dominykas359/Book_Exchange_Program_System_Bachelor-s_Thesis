@@ -1,0 +1,54 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <p class="eyebrow">Exchange details</p>
+        <h2 class="modal-title">Exchange #{{ history.id }}</h2>
+      </div>
+
+      <button class="close-btn" (click)="close.emit()">✕</button>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <span class="meta-label">Exchange date</span>
+        <span class="meta-value">{{ history.timeExchanged }}</span>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Notice id</span>
+        <span class="meta-value">{{ history.noticeId }}</span>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Your user id</span>
+        <span class="meta-value">{{ history.userId }}</span>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Poster user id</span>
+        <span class="meta-value">{{ history.posterUserId }}</span>
+      </div>
+    </div>
+
+    <div class="exchange-grid">
+      <div class="book-card">
+        <p class="section-label">Book you gave away</p>
+        <h3>{{ history.givenPublication.title }}</h3>
+        <p><strong>Author:</strong> {{ history.givenPublication.author }}</p>
+        <p><strong>Language:</strong> {{ history.givenPublication.language }}</p>
+        <p><strong>Pages:</strong> {{ history.givenPublication.pageCount }}</p>
+        <p><strong>Cover:</strong> {{ history.givenPublication.cover }}</p>
+      </div>
+
+      <div class="book-card">
+        <p class="section-label">Book you received</p>
+        <h3>{{ history.receivedPublication.title }}</h3>
+        <p><strong>Author:</strong> {{ history.receivedPublication.author }}</p>
+        <p><strong>Language:</strong> {{ history.receivedPublication.language }}</p>
+        <p><strong>Pages:</strong> {{ history.receivedPublication.pageCount }}</p>
+        <p><strong>Cover:</strong> {{ history.receivedPublication.cover }}</p>
+      </div>
+    </div>
+  </div>
+</div>

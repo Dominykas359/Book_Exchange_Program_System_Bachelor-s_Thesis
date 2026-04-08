@@ -1,0 +1,13 @@
+package com.dominykas.book.exchange.repository;
+
+import com.dominykas.book.exchange.entity.AiChatMessage;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface AiChatMessageRepository extends JpaRepository<AiChatMessage, Long> {
+
+    List<AiChatMessage> findAllByUserIdOrderByCreatedAtAscIdAsc(Long userId);
+
+    void deleteAllByUserId(Long userId);
+}

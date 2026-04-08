@@ -81,7 +81,7 @@
         <p class="server-success">{{ passwordSuccess() }}</p>
         }
 
-        <button class="secondary" type="submit" [disabled]="isChangingPassword()">
+        <button class="primary" type="submit" [disabled]="isChangingPassword()">
           {{ isChangingPassword() ? 'Changing...' : 'Change Password' }}
         </button>
       </form>

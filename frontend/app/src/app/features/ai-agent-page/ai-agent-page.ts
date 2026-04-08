@@ -1,12 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { forkJoin, of } from 'rxjs';
-import { AiChatMessage } from '../../core/models/ai-chat.model';
+import {
+  AiChatMessage,
+  AiChatMessageRequestDto
+} from '../../core/models/ai-chat.model';
 import { NoticeResponseDto } from '../../core/models/notice.model';
 import { PublicationSearchResultDto } from '../../core/models/publication.model';
 import { SettingsResponseDto } from '../../core/models/settings.model';
+import { AiChatService } from '../../core/services/ai-chat.service';
 import { NoticeService } from '../../core/services/notice.service';
 import { PublicationService } from '../../core/services/publication.service';
 import { SettingsService } from '../../core/services/settings.service';
@@ -24,12 +28,14 @@ export class AiAgentPage implements OnInit {
   private readonly publicationService = inject(PublicationService);
   private readonly noticeService = inject(NoticeService);
   private readonly settingsService = inject(SettingsService);
+  private readonly aiChatService = inject(AiChatService);
 
   readonly settings = signal<SettingsResponseDto | null>(null);
   readonly messages = signal<AiChatMessage[]>([]);
   readonly query = signal('');
   readonly isLoading = signal(false);
   readonly isLoadingSettings = signal(false);
+  readonly isLoadingHistory = signal(false);
   readonly errorMessage = signal('');
   readonly selectedNotice = signal<NoticeResponseDto | null>(null);
 
@@ -37,6 +43,7 @@ export class AiAgentPage implements OnInit {
 
   ngOnInit(): void {
     this.loadSettings();
+    this.loadHistory();
   }
 
   updateQuery(value: string): void {
@@ -50,53 +57,76 @@ export class AiAgentPage implements OnInit {
       return;
     }
 
+    const userId = this.getUserId();
+
+    if (!userId) {
+      this.errorMessage.set('No valid user found. Please sign in again.');
+      return;
+    }
+
     this.errorMessage.set('');
-
-    const userMessage: AiChatMessage = {
-      id: crypto.randomUUID(),
-      role: 'user',
-      text: trimmedQuery,
-      createdAt: new Date().toISOString(),
-    };
-
-    this.messages.update((messages) => [...messages, userMessage]);
     this.query.set('');
     this.isLoading.set(true);
 
-    const currentSettings = this.settings();
+    const userMessageRequest: AiChatMessageRequestDto = {
+      userId,
+      role: 'user',
+      text: trimmedQuery,
+      noticeIds: []
+    };
 
-    this.publicationService.search(
-      trimmedQuery,
-      currentSettings?.preferredModelKey ?? 'roberta',
-      currentSettings?.defaultSearchLimit ?? 10,
-      currentSettings?.defaultMinScore ?? 0.45
+    this.aiChatService.saveMessage(userMessageRequest).pipe(
+      tap((savedUserMessage) => {
+        this.messages.update((messages) => [...messages, savedUserMessage]);
+      }),
+      switchMap(() => {
+        const currentSettings = this.settings();
+
+        return this.publicationService.search(
+          trimmedQuery,
+          currentSettings?.preferredModelKey ?? 'roberta',
+          currentSettings?.defaultSearchLimit ?? 10,
+          currentSettings?.defaultMinScore ?? 0.45
+        );
+      })
     ).subscribe({
       next: (results) => {
-        this.loadNoticesFromResults(trimmedQuery, results);
+        this.loadNoticesFromResults(userId, trimmedQuery, results);
       },
       error: (error) => {
         console.error('Semantic search failed:', error);
         this.errorMessage.set('Failed to retrieve matching books.');
 
-        const assistantMessage: AiChatMessage = {
-          id: crypto.randomUUID(),
-          role: 'assistant',
-          text: 'Sorry, I could not retrieve matching books right now.',
-          createdAt: new Date().toISOString(),
-          notices: [],
-        };
-
-        this.messages.update((messages) => [...messages, assistantMessage]);
-        this.isLoading.set(false);
+        this.saveAssistantMessage(
+          userId,
+          'Sorry, I could not retrieve matching books right now.',
+          []
+        );
       },
     });
   }
 
   clearChat(): void {
-    this.messages.set([]);
+    const userId = this.getUserId();
+
     this.errorMessage.set('');
     this.query.set('');
     this.selectedNotice.set(null);
+
+    if (!userId) {
+      this.messages.set([]);
+      return;
+    }
+
+    this.aiChatService.clearHistory(userId).subscribe({
+      next: () => {
+        this.messages.set([]);
+      },
+      error: (error) => {
+        console.error('Failed to clear chat history:', error);
+        this.errorMessage.set('Failed to clear chat history.');
+      }
+    });
   }
 
   openNotice(notice: NoticeResponseDto): void {
@@ -107,7 +137,7 @@ export class AiAgentPage implements OnInit {
     this.selectedNotice.set(null);
   }
 
-  trackByMessageId(_: number, message: AiChatMessage): string {
+  trackByMessageId(_: number, message: AiChatMessage): number {
     return message.id;
   }
 
@@ -134,6 +164,27 @@ export class AiAgentPage implements OnInit {
         console.error('Failed to load settings. Using defaults.', error);
         this.isLoadingSettings.set(false);
       },
+    });
+  }
+
+  private loadHistory(): void {
+    const userId = this.getUserId();
+
+    if (!userId) {
+      return;
+    }
+
+    this.isLoadingHistory.set(true);
+
+    this.aiChatService.getHistory(userId).subscribe({
+      next: (messages) => {
+        this.messages.set(messages);
+        this.isLoadingHistory.set(false);
+      },
+      error: (error) => {
+        console.error('Failed to load chat history:', error);
+        this.isLoadingHistory.set(false);
+      }
     });
   }
 
@@ -168,18 +219,17 @@ export class AiAgentPage implements OnInit {
     }
   }
 
-  private loadNoticesFromResults(query: string, results: PublicationSearchResultDto[]): void {
+  private loadNoticesFromResults(
+    userId: number,
+    query: string,
+    results: PublicationSearchResultDto[]
+  ): void {
     if (results.length === 0) {
-      const assistantMessage: AiChatMessage = {
-        id: crypto.randomUUID(),
-        role: 'assistant',
-        text: `I could not find books matching "${query}".`,
-        createdAt: new Date().toISOString(),
-        notices: [],
-      };
-
-      this.messages.update((messages) => [...messages, assistantMessage]);
-      this.isLoading.set(false);
+      this.saveAssistantMessage(
+        userId,
+        `I could not find books matching "${query}".`,
+        []
+      );
       return;
     }
 
@@ -198,33 +248,63 @@ export class AiAgentPage implements OnInit {
       )
       .subscribe({
         next: (notices) => {
-          const assistantMessage: AiChatMessage = {
-            id: crypto.randomUUID(),
-            role: 'assistant',
-            text: this.buildAssistantText(query, notices.length),
-            createdAt: new Date().toISOString(),
-            notices,
-          };
-
-          this.messages.update((messages) => [...messages, assistantMessage]);
-          this.isLoading.set(false);
+          this.saveAssistantMessage(
+            userId,
+            this.buildAssistantText(query, notices.length),
+            notices
+          );
         },
         error: (error) => {
           console.error('Failed to retrieve notices for search results:', error);
           this.errorMessage.set('Failed to retrieve matching notices.');
 
-          const assistantMessage: AiChatMessage = {
-            id: crypto.randomUUID(),
-            role: 'assistant',
-            text: 'Sorry, I could not retrieve matching notices right now.',
-            createdAt: new Date().toISOString(),
-            notices: [],
-          };
-
-          this.messages.update((messages) => [...messages, assistantMessage]);
-          this.isLoading.set(false);
+          this.saveAssistantMessage(
+            userId,
+            'Sorry, I could not retrieve matching notices right now.',
+            []
+          );
         },
       });
+  }
+
+  private saveAssistantMessage(
+    userId: number,
+    text: string,
+    notices: NoticeResponseDto[]
+  ): void {
+    const assistantMessageRequest: AiChatMessageRequestDto = {
+      userId,
+      role: 'assistant',
+      text,
+      noticeIds: notices.map((notice) => notice.id)
+    };
+
+    this.aiChatService.saveMessage(assistantMessageRequest).subscribe({
+      next: (savedAssistantMessage) => {
+        const messageToDisplay: AiChatMessage = {
+          ...savedAssistantMessage,
+          notices
+        };
+
+        this.messages.update((messages) => [...messages, messageToDisplay]);
+        this.isLoading.set(false);
+      },
+      error: (error) => {
+        console.error('Failed to save assistant message:', error);
+        this.errorMessage.set('Failed to save assistant message.');
+
+        const fallbackMessage: AiChatMessage = {
+          id: Date.now(),
+          role: 'assistant',
+          text,
+          createdAt: new Date().toISOString(),
+          notices
+        };
+
+        this.messages.update((messages) => [...messages, fallbackMessage]);
+        this.isLoading.set(false);
+      }
+    });
   }
 
   private buildAssistantText(query: string, noticeCount: number): string {

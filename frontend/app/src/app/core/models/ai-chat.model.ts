@@ -3,9 +3,16 @@ import { NoticeResponseDto } from './notice.model';
 export type AiChatRole = 'user' | 'assistant';
 
 export interface AiChatMessage {
-  id: string;
+  id: number;
   role: AiChatRole;
   text: string;
   createdAt: string;
   notices?: NoticeResponseDto[];
+}
+
+export interface AiChatMessageRequestDto {
+  userId: number;
+  role: AiChatRole;
+  text: string;
+  noticeIds: number[];
 }

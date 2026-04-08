@@ -9,16 +9,23 @@
       class="clear-btn"
       type="button"
       (click)="clearChat()"
-      [disabled]="!hasMessages() || isLoading()">
+      [disabled]="(!hasMessages() && !isLoadingHistory()) || isLoading()">
       Clear chat
     </button>
   </div>
 
   <div class="chat-panel">
-    @if (!hasMessages()) {
+    @if (isLoadingHistory()) {
+    <div class="empty-state">
+      <h2>Loading conversation</h2>
+      <p>Please wait while your chat history is being loaded.</p>
+    </div>
+    }
+
+    @if (!isLoadingHistory() && !hasMessages()) {
     <div class="empty-state">
       <h2>Start a conversation</h2>
-      <p>Try something like “short fantasy books”, “romantic novels”, or “books for beginners in English”.</p>
+      <p>Try to describe the book as clearly and broadly as possible so the AI can find the best matching results.</p>
     </div>
     }
 
@@ -30,12 +37,12 @@
 
       <div class="message-bubble">
         <div class="message-meta">
-            <span class="message-role">
-              {{ message.role === 'user' ? 'You' : 'Assistant' }}
-            </span>
+          <span class="message-role">
+            {{ message.role === 'user' ? 'You' : 'Assistant' }}
+          </span>
           <span class="message-time">
-              {{ message.createdAt | date:'yyyy-MM-dd HH:mm' }}
-            </span>
+            {{ message.createdAt | date:'yyyy-MM-dd HH:mm' }}
+          </span>
         </div>
 
         <p class="message-text">{{ message.text }}</p>

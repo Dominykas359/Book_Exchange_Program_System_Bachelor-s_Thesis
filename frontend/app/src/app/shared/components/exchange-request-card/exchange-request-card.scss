@@ -1,4 +1,4 @@
-.history-card {
+.exchange-request-card {
   background: #ffffff;
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 20px;
@@ -8,7 +8,7 @@
   transition: all 0.2s ease;
 }
 
-.history-card:hover {
+.exchange-request-card:hover {
   transform: translateY(-1px);
   box-shadow: 0 16px 34px rgba(15, 23, 42, 0.1);
 }
@@ -79,14 +79,24 @@
   color: #b91c1c;
 }
 
-.history-direction {
+.request-direction {
   background: #f8fafc;
   border-radius: 16px;
   padding: 14px;
   margin-bottom: 16px;
 }
 
-.history-text {
+.direction-label {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5b21b6;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.direction-text {
   margin: 0;
   color: #334155;
   font-size: 14px;

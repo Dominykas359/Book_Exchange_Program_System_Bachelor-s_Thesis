@@ -2,11 +2,14 @@ package com.dominykas.book.exchange.service;
 
 import com.dominykas.book.exchange.dto.historyDTO.HistoryRequestDTO;
 import com.dominykas.book.exchange.dto.historyDTO.HistoryResponseDTO;
+import com.dominykas.book.exchange.entity.enums.ExchangeRequestStatus;
 import com.dominykas.book.exchange.entity.History;
+import com.dominykas.book.exchange.entity.Notice;
 import com.dominykas.book.exchange.entity.Publication;
 import com.dominykas.book.exchange.entity.User;
 import com.dominykas.book.exchange.mapper.HistoryMapper;
 import com.dominykas.book.exchange.repository.HistoryRepository;
+import com.dominykas.book.exchange.repository.NoticeRepository;
 import com.dominykas.book.exchange.repository.PublicationRepository;
 import com.dominykas.book.exchange.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +26,19 @@ public class HistoryService {
     private final HistoryRepository historyRepository;
     private final PublicationRepository publicationRepository;
     private final UserRepository userRepository;
+    private final NoticeRepository noticeRepository;
 
     public HistoryResponseDTO createHistory(HistoryRequestDTO dto) {
         History history = HistoryMapper.fromDto(dto);
+
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found: " + dto.getUserId()));
+
+        User posterUser = userRepository.findById(dto.getPosterUserId())
+                .orElseThrow(() -> new RuntimeException("Poster user not found: " + dto.getPosterUserId()));
+
+        Notice notice = noticeRepository.findById(dto.getNoticeId())
+                .orElseThrow(() -> new RuntimeException("Notice not found: " + dto.getNoticeId()));
 
         Publication givenPublication = publicationRepository.findById(dto.getGivenPublicationId())
                 .orElseThrow(() -> new RuntimeException("Publication not found: " + dto.getGivenPublicationId()));
@@ -33,11 +46,18 @@ public class HistoryService {
         Publication receivedPublication = publicationRepository.findById(dto.getReceivedPublicationId())
                 .orElseThrow(() -> new RuntimeException("Publication not found: " + dto.getReceivedPublicationId()));
 
+        history.setUser(user);
+        history.setPosterUser(posterUser);
+        history.setNotice(notice);
         history.setGivenPublication(givenPublication);
         history.setReceivedPublication(receivedPublication);
 
         if (history.getTimeExchanged() == null) {
             history.setTimeExchanged(LocalDate.now());
+        }
+
+        if (history.getStatus() == null) {
+            history.setStatus(ExchangeRequestStatus.ACCEPTED);
         }
 
         History saved = historyRepository.save(history);

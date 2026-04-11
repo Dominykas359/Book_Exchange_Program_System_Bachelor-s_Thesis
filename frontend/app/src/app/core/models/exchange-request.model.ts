@@ -2,25 +2,24 @@ import { NoticeResponseDto } from './notice.model';
 import { PublicationResponseDto } from './publication.model';
 import { UserResponseDto } from './user.model';
 
-export type HistoryStatus = 'PENDING' | 'DECLINED' | 'ACCEPTED';
+export type ExchangeRequestStatus = 'PENDING' | 'DECLINED' | 'ACCEPTED';
 
-export interface HistoryRequestDto {
+export interface ExchangeRequestRequestDto {
+  requestedTime: string;
   userId: number;
-  posterUserId: number;
+  requestedFromUserId: number;
   noticeId: number;
-  timeExchanged: string;
   givenPublicationId: number;
   receivedPublicationId: number;
-  status: HistoryStatus;
 }
 
-export interface HistoryResponseDto {
+export interface ExchangeRequestResponseDto {
   id: number;
-  timeExchanged: string;
+  requestedTime: string;
   user: UserResponseDto;
-  posterUser: UserResponseDto;
+  requestedFromUser: UserResponseDto;
   notice: NoticeResponseDto;
   givenPublication: PublicationResponseDto;
   receivedPublication: PublicationResponseDto;
-  status: HistoryStatus;
+  status: ExchangeRequestStatus;
 }

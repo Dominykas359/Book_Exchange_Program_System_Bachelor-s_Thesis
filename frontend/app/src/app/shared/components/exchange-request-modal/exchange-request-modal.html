@@ -1,0 +1,94 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <p class="eyebrow">Exchange request details</p>
+        <h2 class="modal-title">{{ getUserDisplayName(exchangeRequest.requestedFromUser) }}</h2>
+      </div>
+
+      <button class="close-btn" (click)="close.emit()">✕</button>
+    </div>
+
+    <div class="meta-grid">
+      <div class="meta-item">
+        <span class="meta-label">Requested on</span>
+        <span class="meta-value">{{ exchangeRequest.requestedTime }}</span>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Status</span>
+        <span class="meta-value">
+          <span class="status-badge" [class]="getStatusClass()">{{ getStatusLabel() }}</span>
+        </span>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Requested by</span>
+        <span class="meta-value">{{ getUserDisplayName(exchangeRequest.user) }}</span>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Requested from</span>
+        <span class="meta-value">{{ getUserDisplayName(exchangeRequest.requestedFromUser) }}</span>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Notice book</span>
+        <span class="meta-value">{{ exchangeRequest.notice.publication.title }}</span>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Notice owner</span>
+        <span class="meta-value">{{ getUserDisplayName(exchangeRequest.notice.poster) }}</span>
+      </div>
+    </div>
+
+    <div class="exchange-grid">
+      <div class="book-card">
+        <p class="section-label">Book you give away</p>
+        <h3>{{ exchangeRequest.givenPublication.title }}</h3>
+        <p><strong>Author:</strong> {{ exchangeRequest.givenPublication.author }}</p>
+        <p><strong>Language:</strong> {{ exchangeRequest.givenPublication.language }}</p>
+        <p><strong>Pages:</strong> {{ exchangeRequest.givenPublication.pageCount }}</p>
+        <p><strong>Cover:</strong> {{ exchangeRequest.givenPublication.cover }}</p>
+        <p><strong>Edition:</strong> {{ exchangeRequest.givenPublication.editionNumber }}</p>
+        <p><strong>Colored:</strong> {{ exchangeRequest.givenPublication.colored ? 'Yes' : 'No' }}</p>
+        <p><strong>Description:</strong> {{ exchangeRequest.givenPublication.description }}</p>
+      </div>
+
+      <div class="book-card">
+        <p class="section-label">Book you receive</p>
+        <h3>{{ exchangeRequest.receivedPublication.title }}</h3>
+        <p><strong>Author:</strong> {{ exchangeRequest.receivedPublication.author }}</p>
+        <p><strong>Language:</strong> {{ exchangeRequest.receivedPublication.language }}</p>
+        <p><strong>Pages:</strong> {{ exchangeRequest.receivedPublication.pageCount }}</p>
+        <p><strong>Cover:</strong> {{ exchangeRequest.receivedPublication.cover }}</p>
+        <p><strong>Edition:</strong> {{ exchangeRequest.receivedPublication.editionNumber }}</p>
+        <p><strong>Colored:</strong> {{ exchangeRequest.receivedPublication.colored ? 'Yes' : 'No' }}</p>
+        <p><strong>Description:</strong> {{ exchangeRequest.receivedPublication.description }}</p>
+      </div>
+    </div>
+
+    @if (actionErrorMessage) {
+    <div class="action-error-card">
+      <p>{{ actionErrorMessage }}</p>
+    </div>
+    }
+
+    <div class="action-row">
+      @if (canAcceptOrDecline()) {
+      <button class="action-btn accept-btn" [disabled]="isActionLoading" (click)="onAccept()">
+        Accept
+      </button>
+
+      <button class="action-btn decline-btn" [disabled]="isActionLoading" (click)="onDecline()">
+        Decline
+      </button>
+      }
+
+      <button class="action-btn delete-btn" [disabled]="isActionLoading" (click)="onDelete()">
+        Delete
+      </button>
+    </div>
+  </div>
+</div>

@@ -33,6 +33,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/history-page/history-page').then(m => m.HistoryPage)
       },
       {
+        path: 'exchange-requests',
+        loadComponent: () => import('./features/exchange-requests-page/exchange-requests-page').then(m => m.ExchangeRequestsPage)
+      },
+      {
         path: 'profile',
         loadComponent: () => import('./features/profile-page/profile-page').then(m => m.ProfilePage)
       },

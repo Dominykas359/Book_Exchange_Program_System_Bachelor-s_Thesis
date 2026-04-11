@@ -1,11 +1,22 @@
 <div class="history-card" (click)="onClick()">
   <div class="card-header">
     <div>
-      <p class="eyebrow">Exchange #{{ history.id }}</p>
-      <h3 class="card-title">Completed exchange</h3>
+      <p class="eyebrow">Exchange history</p>
+      <h3 class="card-title">{{ getUserDisplayName(history.posterUser) }}</h3>
     </div>
 
-    <span class="exchange-date">{{ history.timeExchanged }}</span>
+    <div class="header-right">
+      <span class="status-badge" [class]="getStatusClass()">{{ getStatusLabel() }}</span>
+      <span class="exchange-date">{{ history.timeExchanged }}</span>
+    </div>
+  </div>
+
+  <div class="history-direction">
+    <span class="book-label">Exchange summary</span>
+    <p class="history-text">
+      You gave <strong>{{ history.givenPublication.title }}</strong>
+      and received <strong>{{ history.receivedPublication.title }}</strong>.
+    </p>
   </div>
 
   <div class="card-content">
@@ -13,6 +24,10 @@
       <span class="book-label">You gave away</span>
       <p class="book-title">{{ history.givenPublication.title }}</p>
       <p class="book-author">{{ history.givenPublication.author }}</p>
+      <p class="book-meta">
+        {{ history.givenPublication.language }} ·
+        {{ history.givenPublication.pageCount }} pages
+      </p>
     </div>
 
     <div class="swap-indicator">⇄</div>
@@ -21,6 +36,10 @@
       <span class="book-label">You received</span>
       <p class="book-title">{{ history.receivedPublication.title }}</p>
       <p class="book-author">{{ history.receivedPublication.author }}</p>
+      <p class="book-meta">
+        {{ history.receivedPublication.language }} ·
+        {{ history.receivedPublication.pageCount }} pages
+      </p>
     </div>
   </div>
 </div>

@@ -1,0 +1,45 @@
+<div class="exchange-request-card" (click)="onClick()">
+  <div class="card-header">
+    <div>
+      <p class="eyebrow">Exchange request</p>
+      <h3 class="card-title">{{ getUserDisplayName(exchangeRequest.requestedFromUser) }}</h3>
+    </div>
+
+    <div class="header-right">
+      <span class="status-badge" [class]="getStatusClass()">{{ getStatusLabel() }}</span>
+      <span class="exchange-date">{{ exchangeRequest.requestedTime }}</span>
+    </div>
+  </div>
+
+  <div class="request-direction">
+    <span class="direction-label">Requested exchange</span>
+    <p class="direction-text">
+      You offer <strong>{{ exchangeRequest.givenPublication.title }}</strong>
+      and request <strong>{{ exchangeRequest.receivedPublication.title }}</strong>.
+    </p>
+  </div>
+
+  <div class="card-content">
+    <div class="book-box">
+      <span class="book-label">You give away</span>
+      <p class="book-title">{{ exchangeRequest.givenPublication.title }}</p>
+      <p class="book-author">{{ exchangeRequest.givenPublication.author }}</p>
+      <p class="book-meta">
+        {{ exchangeRequest.givenPublication.language }} ·
+        {{ exchangeRequest.givenPublication.pageCount }} pages
+      </p>
+    </div>
+
+    <div class="swap-indicator">⇄</div>
+
+    <div class="book-box">
+      <span class="book-label">You receive</span>
+      <p class="book-title">{{ exchangeRequest.receivedPublication.title }}</p>
+      <p class="book-author">{{ exchangeRequest.receivedPublication.author }}</p>
+      <p class="book-meta">
+        {{ exchangeRequest.receivedPublication.language }} ·
+        {{ exchangeRequest.receivedPublication.pageCount }} pages
+      </p>
+    </div>
+  </div>
+</div>

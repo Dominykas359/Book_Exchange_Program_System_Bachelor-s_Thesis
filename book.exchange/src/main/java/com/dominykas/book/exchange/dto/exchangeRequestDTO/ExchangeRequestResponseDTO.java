@@ -1,4 +1,4 @@
-package com.dominykas.book.exchange.dto.historyDTO;
+package com.dominykas.book.exchange.dto.exchangeRequestDTO;
 
 import com.dominykas.book.exchange.dto.noticeDTO.NoticeResponseDTO;
 import com.dominykas.book.exchange.dto.publicationDTO.PublicationResponseDTO;
@@ -9,11 +9,12 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class HistoryResponseDTO {
+public class ExchangeRequestResponseDTO {
+
     private Long id;
-    private LocalDate timeExchanged;
+    private LocalDate requestedTime;
     private UserResponseDTO user;
-    private UserResponseDTO posterUser;
+    private UserResponseDTO requestedFromUser;
     private NoticeResponseDTO notice;
     private PublicationResponseDTO givenPublication;
     private PublicationResponseDTO receivedPublication;

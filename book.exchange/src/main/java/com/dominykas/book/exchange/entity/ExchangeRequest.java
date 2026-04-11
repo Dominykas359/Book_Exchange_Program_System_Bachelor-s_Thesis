@@ -9,26 +9,26 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "history")
+@Table(name = "exchange_requests")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class History {
+public class ExchangeRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "time_exchanged", nullable = false)
-    private LocalDate timeExchanged;
+    @Column(name = "requested_time", nullable = false)
+    private LocalDate requestedTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "poster_user_id", nullable = false)
-    private User posterUser;
+    @JoinColumn(name = "requested_from_user_id", nullable = false)
+    private User requestedFromUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notice_id", nullable = false)

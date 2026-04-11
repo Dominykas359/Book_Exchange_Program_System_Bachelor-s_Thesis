@@ -1,22 +1,40 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { HistoryResponseDto } from '../../../core/models/history.model';
+import { ExchangeRequestResponseDto } from '../../../core/models/exchange-request.model';
 import { UserResponseDto } from '../../../core/models/user.model';
 
 @Component({
-  selector: 'app-history-modal',
+  selector: 'app-exchange-request-modal',
   standalone: true,
   imports: [],
-  templateUrl: './history-modal.html',
-  styleUrl: './history-modal.scss'
+  templateUrl: './exchange-request-modal.html',
+  styleUrl: './exchange-request-modal.scss'
 })
-export class HistoryModalComponent {
-  @Input({ required: true }) history!: HistoryResponseDto;
+export class ExchangeRequestModalComponent {
+  @Input({ required: true }) exchangeRequest!: ExchangeRequestResponseDto;
+  @Input() isActionLoading = false;
+  @Input() actionErrorMessage = '';
+
   @Output() close = new EventEmitter<void>();
+  @Output() accept = new EventEmitter<ExchangeRequestResponseDto>();
+  @Output() decline = new EventEmitter<ExchangeRequestResponseDto>();
+  @Output() delete = new EventEmitter<ExchangeRequestResponseDto>();
 
   onBackdropClick(event: MouseEvent): void {
     if (event.target === event.currentTarget) {
       this.close.emit();
     }
+  }
+
+  onAccept(): void {
+    this.accept.emit(this.exchangeRequest);
+  }
+
+  onDecline(): void {
+    this.decline.emit(this.exchangeRequest);
+  }
+
+  onDelete(): void {
+    this.delete.emit(this.exchangeRequest);
   }
 
   getUserDisplayName(user: UserResponseDto | null | undefined): string {
@@ -51,7 +69,7 @@ export class HistoryModalComponent {
   }
 
   getStatusLabel(): string {
-    switch (this.history.status) {
+    switch (this.exchangeRequest.status) {
       case 'ACCEPTED':
         return 'Accepted';
       case 'DECLINED':
@@ -62,7 +80,7 @@ export class HistoryModalComponent {
   }
 
   getStatusClass(): string {
-    switch (this.history.status) {
+    switch (this.exchangeRequest.status) {
       case 'ACCEPTED':
         return 'accepted';
       case 'DECLINED':
@@ -70,5 +88,9 @@ export class HistoryModalComponent {
       default:
         return 'pending';
     }
+  }
+
+  canAcceptOrDecline(): boolean {
+    return this.exchangeRequest.status === 'PENDING';
   }
 }

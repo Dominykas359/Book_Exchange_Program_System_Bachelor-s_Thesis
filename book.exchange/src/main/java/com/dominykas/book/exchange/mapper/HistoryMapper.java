@@ -11,22 +11,21 @@ public class HistoryMapper {
     public static History fromDto(HistoryRequestDTO historyRequestDTO) {
         History history = new History();
         history.setId(null);
-        history.setUserId(historyRequestDTO.getUserId());
-        history.setPosterUserId(historyRequestDTO.getPosterUserId());
-        history.setNoticeId(historyRequestDTO.getNoticeId());
         history.setTimeExchanged(historyRequestDTO.getTimeExchanged());
+        history.setStatus(historyRequestDTO.getStatus());
         return history;
     }
 
     public static HistoryResponseDTO toDto(History history) {
         HistoryResponseDTO historyResponseDTO = new HistoryResponseDTO();
         historyResponseDTO.setId(history.getId());
-        historyResponseDTO.setUserId(history.getUserId());
-        historyResponseDTO.setPosterUserId(history.getPosterUserId());
-        historyResponseDTO.setNoticeId(history.getNoticeId());
         historyResponseDTO.setTimeExchanged(history.getTimeExchanged());
+        historyResponseDTO.setUser(UserMapper.toDto(history.getUser()));
+        historyResponseDTO.setPosterUser(UserMapper.toDto(history.getPosterUser()));
+        historyResponseDTO.setNotice(NoticeMapper.toDto(history.getNotice()));
         historyResponseDTO.setGivenPublication(PublicationMapper.toDto(history.getGivenPublication()));
         historyResponseDTO.setReceivedPublication(PublicationMapper.toDto(history.getReceivedPublication()));
+        historyResponseDTO.setStatus(history.getStatus());
         return historyResponseDTO;
     }
 }

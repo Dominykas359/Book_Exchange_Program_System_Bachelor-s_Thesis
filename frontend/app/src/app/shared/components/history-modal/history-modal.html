@@ -3,7 +3,7 @@
     <div class="modal-header">
       <div>
         <p class="eyebrow">Exchange details</p>
-        <h2 class="modal-title">Exchange #{{ history.id }}</h2>
+        <h2 class="modal-title">{{ history.receivedPublication.title }}</h2>
       </div>
 
       <button class="close-btn" (click)="close.emit()">✕</button>
@@ -16,18 +16,30 @@
       </div>
 
       <div class="meta-item">
-        <span class="meta-label">Notice id</span>
-        <span class="meta-value">{{ history.noticeId }}</span>
+        <span class="meta-label">Status</span>
+        <span class="meta-value">
+          <span class="status-badge" [class]="getStatusClass()">{{ getStatusLabel() }}</span>
+        </span>
       </div>
 
       <div class="meta-item">
-        <span class="meta-label">Your user id</span>
-        <span class="meta-value">{{ history.userId }}</span>
+        <span class="meta-label">You</span>
+        <span class="meta-value">{{ getUserDisplayName(history.user) }}</span>
       </div>
 
       <div class="meta-item">
-        <span class="meta-label">Poster user id</span>
-        <span class="meta-value">{{ history.posterUserId }}</span>
+        <span class="meta-label">Exchange partner</span>
+        <span class="meta-value">{{ getUserDisplayName(history.posterUser) }}</span>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Notice book</span>
+        <span class="meta-value">{{ history.notice.publication.title }}</span>
+      </div>
+
+      <div class="meta-item">
+        <span class="meta-label">Notice owner</span>
+        <span class="meta-value">{{ getUserDisplayName(history.notice.poster) }}</span>
       </div>
     </div>
 
@@ -39,6 +51,9 @@
         <p><strong>Language:</strong> {{ history.givenPublication.language }}</p>
         <p><strong>Pages:</strong> {{ history.givenPublication.pageCount }}</p>
         <p><strong>Cover:</strong> {{ history.givenPublication.cover }}</p>
+        <p><strong>Edition:</strong> {{ history.givenPublication.editionNumber }}</p>
+        <p><strong>Colored:</strong> {{ history.givenPublication.colored ? 'Yes' : 'No' }}</p>
+        <p><strong>Description:</strong> {{ history.givenPublication.description }}</p>
       </div>
 
       <div class="book-card">
@@ -48,6 +63,9 @@
         <p><strong>Language:</strong> {{ history.receivedPublication.language }}</p>
         <p><strong>Pages:</strong> {{ history.receivedPublication.pageCount }}</p>
         <p><strong>Cover:</strong> {{ history.receivedPublication.cover }}</p>
+        <p><strong>Edition:</strong> {{ history.receivedPublication.editionNumber }}</p>
+        <p><strong>Colored:</strong> {{ history.receivedPublication.colored ? 'Yes' : 'No' }}</p>
+        <p><strong>Description:</strong> {{ history.receivedPublication.description }}</p>
       </div>
     </div>
   </div>

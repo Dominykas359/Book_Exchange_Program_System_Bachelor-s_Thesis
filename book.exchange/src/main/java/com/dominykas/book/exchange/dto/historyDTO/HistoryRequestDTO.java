@@ -1,5 +1,6 @@
 package com.dominykas.book.exchange.dto.historyDTO;
 
+import com.dominykas.book.exchange.entity.enums.ExchangeRequestStatus;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -12,4 +13,5 @@ public class HistoryRequestDTO {
     private LocalDate timeExchanged;
     private Long givenPublicationId;
     private Long receivedPublicationId;
+    private ExchangeRequestStatus status;
 }

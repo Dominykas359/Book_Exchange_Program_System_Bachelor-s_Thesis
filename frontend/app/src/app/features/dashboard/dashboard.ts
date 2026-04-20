@@ -22,7 +22,7 @@ export class Dashboard implements OnInit {
   readonly selectedNotice = signal<NoticeResponseDto | null>(null);
 
   readonly currentPage = signal(0);
-  readonly pageSize = signal(12);
+  readonly pageSize = signal(15);
   readonly totalPages = signal(0);
   readonly isFirst = signal(true);
   readonly isLast = signal(true);

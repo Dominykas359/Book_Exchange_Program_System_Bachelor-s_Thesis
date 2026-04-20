@@ -12,6 +12,7 @@ public class NoticeMapper {
         Notice notice = new Notice();
         notice.setTimePosted(noticeRequestDTO.getTimePosted());
         notice.setWishInReturn(noticeRequestDTO.getWishInReturn());
+        notice.setStatus(noticeRequestDTO.getStatus());
         return notice;
     }
 
@@ -22,7 +23,7 @@ public class NoticeMapper {
         noticeResponseDTO.setWishInReturn(notice.getWishInReturn());
         noticeResponseDTO.setPoster(UserMapper.toDto(notice.getPoster()));
         noticeResponseDTO.setPublication(PublicationMapper.toDto(notice.getPublication()));
-
+        noticeResponseDTO.setStatus(notice.getStatus());
         return noticeResponseDTO;
     }
 }

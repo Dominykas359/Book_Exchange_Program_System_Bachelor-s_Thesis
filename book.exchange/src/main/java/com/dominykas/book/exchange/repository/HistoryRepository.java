@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface HistoryRepository extends JpaRepository<History, Long> {
 
-    List<History> findAllByUserIdOrderByTimeExchangedDescIdDesc(Long userId);
+    List<History> findAllByUserIdOrPosterUserIdOrderByTimeExchangedDescIdDesc(Long userId, Long posterUserId);
 }

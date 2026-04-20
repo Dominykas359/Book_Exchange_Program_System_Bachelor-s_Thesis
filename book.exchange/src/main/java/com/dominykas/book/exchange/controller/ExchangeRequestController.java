@@ -1,5 +1,6 @@
 package com.dominykas.book.exchange.controller;
 
+import com.dominykas.book.exchange.dto.exchangeRequestDTO.AcceptExchangeRequestDTO;
 import com.dominykas.book.exchange.dto.exchangeRequestDTO.ExchangeRequestRequestDTO;
 import com.dominykas.book.exchange.dto.exchangeRequestDTO.ExchangeRequestResponseDTO;
 import com.dominykas.book.exchange.entity.enums.ExchangeRequestStatus;
@@ -42,8 +43,11 @@ public class ExchangeRequestController {
     }
 
     @PatchMapping("/{id}/accept")
-    public ExchangeRequestResponseDTO acceptExchangeRequest(@PathVariable Long id) {
-        return exchangeRequestService.acceptExchangeRequest(id);
+    public ExchangeRequestResponseDTO acceptExchangeRequest(
+            @PathVariable Long id,
+            @RequestBody AcceptExchangeRequestDTO dto
+    ) {
+        return exchangeRequestService.acceptExchangeRequest(id, dto);
     }
 
     @PatchMapping("/{id}/decline")

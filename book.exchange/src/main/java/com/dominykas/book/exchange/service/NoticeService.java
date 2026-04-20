@@ -7,6 +7,7 @@ import com.dominykas.book.exchange.dto.noticeDTO.NoticeResponseDTO;
 import com.dominykas.book.exchange.entity.Notice;
 import com.dominykas.book.exchange.entity.Publication;
 import com.dominykas.book.exchange.entity.User;
+import com.dominykas.book.exchange.entity.enums.NoticeStatus;
 import com.dominykas.book.exchange.mapper.NoticeMapper;
 import com.dominykas.book.exchange.repository.NoticeRepository;
 import com.dominykas.book.exchange.repository.PublicationRepository;
@@ -43,6 +44,10 @@ public class NoticeService {
         notice.setPublication(publication);
         notice.setTimePosted(LocalDate.now());
 
+        if (notice.getStatus() == null) {
+            notice.setStatus(NoticeStatus.OPEN);
+        }
+
         Notice saved = noticeRepository.save(notice);
         return NoticeMapper.toDto(saved);
     }
@@ -56,9 +61,11 @@ public class NoticeService {
     ) {
         String mappedSortBy = mapSortBy(sortBy);
 
-        Sort sort = sortDir.equalsIgnoreCase("asc")
+        Sort secondarySort = sortDir.equalsIgnoreCase("asc")
                 ? Sort.by(mappedSortBy).ascending()
                 : Sort.by(mappedSortBy).descending();
+
+        Sort sort = Sort.by(Sort.Order.desc("status")).and(secondarySort);
 
         Pageable pageable = PageRequest.of(page, size, sort);
 

@@ -42,7 +42,7 @@ public class NoticeController {
     @GetMapping
     public PageResponseDTO<NoticeResponseDTO> getNotices(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(defaultValue = "15") int size,
             @RequestParam(defaultValue = "timePosted") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDir,
             @RequestParam(required = false) Long posterId,

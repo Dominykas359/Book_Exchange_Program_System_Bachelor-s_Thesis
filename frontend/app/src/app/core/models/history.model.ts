@@ -12,6 +12,8 @@ export interface HistoryRequestDto {
   givenPublicationId: number;
   receivedPublicationId: number;
   status: HistoryStatus;
+  requesterAddress?: string;
+  requestedFromUserAddress?: string;
 }
 
 export interface HistoryResponseDto {
@@ -23,4 +25,6 @@ export interface HistoryResponseDto {
   givenPublication: PublicationResponseDto;
   receivedPublication: PublicationResponseDto;
   status: HistoryStatus;
+  requesterAddress?: string;
+  requestedFromUserAddress?: string;
 }

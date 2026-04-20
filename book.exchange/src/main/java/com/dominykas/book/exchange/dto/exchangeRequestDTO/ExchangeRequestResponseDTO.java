@@ -19,4 +19,6 @@ public class ExchangeRequestResponseDTO {
     private PublicationResponseDTO givenPublication;
     private PublicationResponseDTO receivedPublication;
     private ExchangeRequestStatus status;
+    private String requesterAddress;
+    private String requestedFromUserAddress;
 }

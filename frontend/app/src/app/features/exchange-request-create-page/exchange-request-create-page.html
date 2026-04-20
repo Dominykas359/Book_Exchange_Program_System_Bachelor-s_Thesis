@@ -1,0 +1,146 @@
+<div class="exchange-request-create-page">
+  <div class="page-header">
+    <h1 class="title">Create exchange request</h1>
+    <p class="subtitle">Offer your book in exchange for this notice.</p>
+  </div>
+
+  @if (isLoadingNotice()) {
+  <div class="state-card">
+    <p>Loading notice...</p>
+  </div>
+  } @else {
+  @if (errorMessage() && !notice()) {
+  <div class="state-card error-card">
+    <p>{{ errorMessage() }}</p>
+  </div>
+  }
+
+  @if (notice(); as currentNotice) {
+  <div class="notice-summary-card">
+    <p class="eyebrow">Notice owner</p>
+    <h2>{{ getPosterFullName() }}</h2>
+
+    <div class="notice-book">
+      <p><strong>Requested book:</strong> {{ currentNotice.publication.title }}</p>
+      <p><strong>Author:</strong> {{ currentNotice.publication.author }}</p>
+      <p><strong>Language:</strong> {{ currentNotice.publication.language }}</p>
+      <p><strong>Pages:</strong> {{ currentNotice.publication.pageCount }}</p>
+      <p><strong>Description:</strong> {{ currentNotice.publication.description }}</p>
+      <p><strong>Wish in return:</strong> {{ currentNotice.wishInReturn }}</p>
+    </div>
+  </div>
+
+  <form class="exchange-form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="field">
+      <label>Title</label>
+      <input formControlName="title" />
+      @if (hasError('title', 'required')) {
+      <p class="field-error">Title is required.</p>
+      }
+    </div>
+
+    <div class="field">
+      <label>Author</label>
+      <input formControlName="author" />
+      @if (hasError('author', 'required')) {
+      <p class="field-error">Author is required.</p>
+      }
+    </div>
+
+    <div class="grid">
+      <div class="field">
+        <label>Release date</label>
+        <input type="date" formControlName="releaseYear" />
+        @if (hasError('releaseYear', 'required')) {
+        <p class="field-error">Release date is required.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label>Language</label>
+        <input formControlName="language" />
+        @if (hasError('language', 'required')) {
+        <p class="field-error">Language is required.</p>
+        }
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Description</label>
+      <textarea rows="6" formControlName="description"></textarea>
+      <p class="hint">
+        {{ form.controls.description.value.length || 0 }} / 50000 characters
+      </p>
+      @if (hasError('description', 'required')) {
+      <p class="field-error">Description is required.</p>
+      }
+      @if (hasError('description', 'maxlength')) {
+      <p class="field-error">Description is too long.</p>
+      }
+    </div>
+
+    <div class="field">
+      <label>Page count</label>
+      <input type="number" min="1" formControlName="pageCount" />
+      @if (hasError('pageCount', 'required')) {
+      <p class="field-error">Page count is required.</p>
+      }
+      @if (hasError('pageCount', 'min')) {
+      <p class="field-error">Page count must be at least 1.</p>
+      }
+    </div>
+
+    <div class="field">
+      <label>Cover (optional)</label>
+      <input formControlName="cover" placeholder="e.g. hardcover" />
+    </div>
+
+    <div class="grid">
+      <div class="field">
+        <label>Edition number (optional)</label>
+        <input type="number" min="1" formControlName="editionNumber" />
+        @if (hasError('editionNumber', 'min')) {
+        <p class="field-error">Edition number must be at least 1.</p>
+        }
+      </div>
+
+      <div class="field checkbox-field">
+        <label for="colored">Colored (optional)</label>
+        <input id="colored" type="checkbox" formControlName="colored" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="requesterAddress">Your address</label>
+      <textarea
+        id="requesterAddress"
+        rows="4"
+        formControlName="requesterAddress"
+      ></textarea>
+      @if (hasError('requesterAddress', 'required')) {
+      <p class="field-error">Address is required.</p>
+      }
+      @if (hasError('requesterAddress', 'maxlength')) {
+      <p class="field-error">Maximum 2000 characters.</p>
+      }
+    </div>
+
+    @if (errorMessage() && notice()) {
+    <div class="state-card error-card">
+      <p>{{ errorMessage() }}</p>
+    </div>
+    }
+
+    <div class="action-row">
+      <button type="submit" [disabled]="isSubmitting()">
+        @if (isSubmitting()) {
+        Creating...
+        } @else {
+        Create exchange request
+        }
+      </button>
+    </div>
+  </form>
+  }
+  }
+</div>

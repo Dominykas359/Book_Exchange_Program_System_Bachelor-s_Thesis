@@ -21,8 +21,4 @@ export class HistoryService {
   getHistoryByUserId(userId: number): Observable<HistoryResponseDto[]> {
     return this.http.get<HistoryResponseDto[]>(`${this.baseUrl}/user/${userId}`);
   }
-
-  getMyHistory(): Observable<HistoryResponseDto[]> {
-    return this.http.get<HistoryResponseDto[]>(`${this.baseUrl}/me`);
-  }
 }

@@ -14,4 +14,6 @@ public class HistoryRequestDTO {
     private Long givenPublicationId;
     private Long receivedPublicationId;
     private ExchangeRequestStatus status;
+    private String requesterAddress;
+    private String requestedFromUserAddress;
 }

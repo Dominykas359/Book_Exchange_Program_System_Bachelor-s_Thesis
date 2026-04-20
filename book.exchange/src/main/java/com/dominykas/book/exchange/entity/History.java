@@ -42,6 +42,12 @@ public class History {
     @JoinColumn(name = "received_publication_id", nullable = false)
     private Publication receivedPublication;
 
+    @Column(name = "requester_address", columnDefinition = "TEXT")
+    private String requesterAddress;
+
+    @Column(name = "requested_from_user_address", columnDefinition = "TEXT")
+    private String requestedFromUserAddress;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ExchangeRequestStatus status;

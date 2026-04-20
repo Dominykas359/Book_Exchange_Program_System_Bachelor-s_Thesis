@@ -69,6 +69,44 @@
       </div>
     </div>
 
+    <div class="address-grid">
+      <div class="address-card">
+        <p class="section-label">Requester address</p>
+        <p>{{ exchangeRequest.requesterAddress }}</p>
+      </div>
+
+      <div class="address-card">
+        <p class="section-label">Requested from user address</p>
+
+        @if (exchangeRequest.requestedFromUserAddress) {
+        <p>{{ exchangeRequest.requestedFromUserAddress }}</p>
+        } @else {
+        <p class="empty-address-text">Address not entered yet.</p>
+        }
+      </div>
+    </div>
+
+    @if (canAcceptOrDecline()) {
+    <div class="accept-section">
+      <p class="section-label">Set your address for acceptance</p>
+
+      <div class="field">
+        <label>Your address</label>
+        <textarea
+          rows="4"
+          [(ngModel)]="acceptForm.requestedFromUserAddress"
+          placeholder="Enter full shipping address"
+        ></textarea>
+      </div>
+    </div>
+    }
+
+    @if (exchangeRequest.status === 'PENDING' && getPendingActionMessage()) {
+    <div class="info-card">
+      <p>{{ getPendingActionMessage() }}</p>
+    </div>
+    }
+
     @if (actionErrorMessage) {
     <div class="action-error-card">
       <p>{{ actionErrorMessage }}</p>

@@ -11,6 +11,8 @@ public class ExchangeRequestMapper {
     public static ExchangeRequest fromDto(ExchangeRequestRequestDTO dto) {
         ExchangeRequest exchangeRequest = new ExchangeRequest();
         exchangeRequest.setRequestedTime(dto.getRequestedTime());
+        exchangeRequest.setRequesterAddress(dto.getRequesterAddress());
+        exchangeRequest.setRequestedFromUserAddress(dto.getRequestedFromUserAddress());
         return exchangeRequest;
     }
 
@@ -24,6 +26,8 @@ public class ExchangeRequestMapper {
         dto.setGivenPublication(PublicationMapper.toDto(exchangeRequest.getGivenPublication()));
         dto.setReceivedPublication(PublicationMapper.toDto(exchangeRequest.getReceivedPublication()));
         dto.setStatus(exchangeRequest.getStatus());
+        dto.setRequesterAddress(exchangeRequest.getRequesterAddress());
+        dto.setRequestedFromUserAddress(exchangeRequest.getRequestedFromUserAddress());
         return dto;
     }
 }

@@ -6,7 +6,6 @@ import com.dominykas.book.exchange.service.HistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -29,10 +28,5 @@ public class HistoryController {
     @GetMapping("/user/{userId}")
     public List<HistoryResponseDTO> getHistoryByUserId(@PathVariable Long userId) {
         return historyService.getHistoryByUserId(userId);
-    }
-
-    @GetMapping("/me")
-    public List<HistoryResponseDTO> getMyHistory(Principal principal) {
-        return historyService.getMyHistory(principal);
     }
 }

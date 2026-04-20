@@ -1,7 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ExchangeRequestRequestDto, ExchangeRequestResponseDto, ExchangeRequestStatus } from '../models/exchange-request.model';
+import {
+  AcceptExchangeRequestDto,
+  ExchangeRequestRequestDto,
+  ExchangeRequestResponseDto,
+  ExchangeRequestStatus
+} from '../models/exchange-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +35,8 @@ export class ExchangeRequestService {
     return this.http.get<ExchangeRequestResponseDto[]>(`${this.baseUrl}/status/${status}`);
   }
 
-  acceptExchangeRequest(id: number): Observable<ExchangeRequestResponseDto> {
-    return this.http.patch<ExchangeRequestResponseDto>(`${this.baseUrl}/${id}/accept`, {});
+  acceptExchangeRequest(id: number, dto: AcceptExchangeRequestDto): Observable<ExchangeRequestResponseDto> {
+    return this.http.patch<ExchangeRequestResponseDto>(`${this.baseUrl}/${id}/accept`, dto);
   }
 
   declineExchangeRequest(id: number): Observable<ExchangeRequestResponseDto> {

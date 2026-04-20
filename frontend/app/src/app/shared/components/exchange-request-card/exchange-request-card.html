@@ -42,4 +42,18 @@
       </p>
     </div>
   </div>
+
+  <div class="address-summary">
+    <div class="address-box">
+      <span class="address-label">Your address</span>
+      <p class="address-value">{{ exchangeRequest.requesterAddress }}</p>
+    </div>
+
+    @if (exchangeRequest.requestedFromUserAddress) {
+    <div class="address-box">
+      <span class="address-label">Other user address</span>
+      <p class="address-value">{{ exchangeRequest.requestedFromUserAddress }}</p>
+    </div>
+    }
+  </div>
 </div>

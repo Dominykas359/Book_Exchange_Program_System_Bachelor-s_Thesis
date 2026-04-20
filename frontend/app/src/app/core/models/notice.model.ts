@@ -1,11 +1,14 @@
 import { PublicationResponseDto } from './publication.model';
 import { UserResponseDto } from './user.model';
 
+export type NoticeStatus = 'OPEN' | 'CLOSED';
+
 export interface NoticeRequestDto {
   timePosted: string;
   wishInReturn: string;
   posterId: number;
   publicationId: number;
+  status?: NoticeStatus;
 }
 
 export interface NoticeResponseDto {
@@ -14,6 +17,7 @@ export interface NoticeResponseDto {
   wishInReturn: string;
   poster: UserResponseDto;
   publication: PublicationResponseDto;
+  status: NoticeStatus;
 }
 
 export interface PageResponseDto<T> {

@@ -11,6 +11,12 @@ export interface ExchangeRequestRequestDto {
   noticeId: number;
   givenPublicationId: number;
   receivedPublicationId: number;
+  requesterAddress: string;
+  requestedFromUserAddress?: string;
+}
+
+export interface AcceptExchangeRequestDto {
+  requestedFromUserAddress: string;
 }
 
 export interface ExchangeRequestResponseDto {
@@ -22,4 +28,6 @@ export interface ExchangeRequestResponseDto {
   givenPublication: PublicationResponseDto;
   receivedPublication: PublicationResponseDto;
   status: ExchangeRequestStatus;
+  requesterAddress: string;
+  requestedFromUserAddress?: string;
 }

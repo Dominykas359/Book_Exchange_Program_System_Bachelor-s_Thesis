@@ -13,6 +13,8 @@ public class HistoryMapper {
         history.setId(null);
         history.setTimeExchanged(historyRequestDTO.getTimeExchanged());
         history.setStatus(historyRequestDTO.getStatus());
+        history.setRequesterAddress(historyRequestDTO.getRequesterAddress());
+        history.setRequestedFromUserAddress(historyRequestDTO.getRequestedFromUserAddress());
         return history;
     }
 
@@ -26,6 +28,8 @@ public class HistoryMapper {
         historyResponseDTO.setGivenPublication(PublicationMapper.toDto(history.getGivenPublication()));
         historyResponseDTO.setReceivedPublication(PublicationMapper.toDto(history.getReceivedPublication()));
         historyResponseDTO.setStatus(history.getStatus());
+        historyResponseDTO.setRequesterAddress(history.getRequesterAddress());
+        historyResponseDTO.setRequestedFromUserAddress(history.getRequestedFromUserAddress());
         return historyResponseDTO;
     }
 }

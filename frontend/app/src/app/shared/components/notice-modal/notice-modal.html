@@ -70,11 +70,36 @@
           <span>Wish in return</span>
           <p>{{ notice.wishInReturn }}</p>
         </div>
+
+        <div class="info-item">
+          <span>Status</span>
+          <p>
+            <span class="status-badge" [class.closed]="isClosed()">
+              {{ getStatusLabel() }}
+            </span>
+          </p>
+        </div>
       </div>
 
       <div class="description-block">
         <span>Description</span>
         <p>{{ notice.publication.description }}</p>
+      </div>
+
+      @if (!canCreateExchangeRequest()) {
+      <div class="notice-warning">
+        {{ getCreateRequestDisabledReason() }}
+      </div>
+      }
+
+      <div class="action-row">
+        <button
+          class="create-request-btn"
+          type="button"
+          [disabled]="!canCreateExchangeRequest()"
+          (click)="openCreateExchangeRequestPage()">
+          Create exchange request
+        </button>
       </div>
     </div>
   </div>

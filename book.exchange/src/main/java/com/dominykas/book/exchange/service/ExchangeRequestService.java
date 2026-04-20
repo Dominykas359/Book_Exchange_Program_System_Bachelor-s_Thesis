@@ -1,13 +1,15 @@
 package com.dominykas.book.exchange.service;
 
+import com.dominykas.book.exchange.dto.exchangeRequestDTO.AcceptExchangeRequestDTO;
 import com.dominykas.book.exchange.dto.exchangeRequestDTO.ExchangeRequestRequestDTO;
 import com.dominykas.book.exchange.dto.exchangeRequestDTO.ExchangeRequestResponseDTO;
 import com.dominykas.book.exchange.dto.historyDTO.HistoryRequestDTO;
 import com.dominykas.book.exchange.entity.ExchangeRequest;
-import com.dominykas.book.exchange.entity.enums.ExchangeRequestStatus;
 import com.dominykas.book.exchange.entity.Notice;
 import com.dominykas.book.exchange.entity.Publication;
 import com.dominykas.book.exchange.entity.User;
+import com.dominykas.book.exchange.entity.enums.ExchangeRequestStatus;
+import com.dominykas.book.exchange.entity.enums.NoticeStatus;
 import com.dominykas.book.exchange.mapper.ExchangeRequestMapper;
 import com.dominykas.book.exchange.repository.ExchangeRequestRepository;
 import com.dominykas.book.exchange.repository.NoticeRepository;
@@ -51,12 +53,28 @@ public class ExchangeRequestService {
             throw new RuntimeException("User cannot send exchange request to themselves");
         }
 
+        if (notice.getPoster() == null || notice.getPoster().getId() == null) {
+            throw new RuntimeException("Notice poster is missing");
+        }
+
+        if (notice.getStatus() == NoticeStatus.CLOSED) {
+            throw new RuntimeException("Cannot create exchange request for a closed notice");
+        }
+
+        if (notice.getPoster().getId().equals(dto.getUserId())) {
+            throw new RuntimeException("You cannot create an exchange request for your own notice");
+        }
+
         if (!notice.getPoster().getId().equals(dto.getRequestedFromUserId())) {
             throw new RuntimeException("Requested from user must match notice poster");
         }
 
         if (!notice.getPublication().getId().equals(receivedPublication.getId())) {
             throw new RuntimeException("Received publication must match notice publication");
+        }
+
+        if (dto.getRequesterAddress() == null || dto.getRequesterAddress().isBlank()) {
+            throw new RuntimeException("Requester address is required");
         }
 
         boolean alreadyExists = exchangeRequestRepository.existsByUserIdAndNoticeIdAndStatus(
@@ -75,6 +93,8 @@ public class ExchangeRequestService {
         exchangeRequest.setGivenPublication(givenPublication);
         exchangeRequest.setReceivedPublication(receivedPublication);
         exchangeRequest.setRequestedTime(LocalDate.now());
+        exchangeRequest.setRequesterAddress(dto.getRequesterAddress().trim());
+        exchangeRequest.setRequestedFromUserAddress(null);
         exchangeRequest.setStatus(ExchangeRequestStatus.PENDING);
 
         ExchangeRequest saved = exchangeRequestRepository.save(exchangeRequest);
@@ -109,7 +129,7 @@ public class ExchangeRequestService {
                 .toList();
     }
 
-    public ExchangeRequestResponseDTO acceptExchangeRequest(Long id) {
+    public ExchangeRequestResponseDTO acceptExchangeRequest(Long id, AcceptExchangeRequestDTO dto) {
         ExchangeRequest exchangeRequest = exchangeRequestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Exchange request not found: " + id));
 
@@ -117,7 +137,22 @@ public class ExchangeRequestService {
             throw new RuntimeException("Only pending exchange requests can be accepted");
         }
 
+        if (dto.getRequestedFromUserAddress() == null || dto.getRequestedFromUserAddress().isBlank()) {
+            throw new RuntimeException("Requested from user address is required");
+        }
+
+        exchangeRequest.setRequestedFromUserAddress(dto.getRequestedFromUserAddress().trim());
         exchangeRequest.setStatus(ExchangeRequestStatus.ACCEPTED);
+
+        Notice notice = exchangeRequest.getNotice();
+
+        if (notice == null) {
+            throw new RuntimeException("Exchange request notice is missing");
+        }
+
+        notice.setStatus(NoticeStatus.CLOSED);
+        noticeRepository.save(notice);
+
         ExchangeRequest saved = exchangeRequestRepository.save(exchangeRequest);
 
         HistoryRequestDTO historyRequestDTO = new HistoryRequestDTO();
@@ -128,6 +163,8 @@ public class ExchangeRequestService {
         historyRequestDTO.setGivenPublicationId(saved.getGivenPublication().getId());
         historyRequestDTO.setReceivedPublicationId(saved.getReceivedPublication().getId());
         historyRequestDTO.setStatus(saved.getStatus());
+        historyRequestDTO.setRequesterAddress(saved.getRequesterAddress());
+        historyRequestDTO.setRequestedFromUserAddress(saved.getRequestedFromUserAddress());
 
         historyService.createHistory(historyRequestDTO);
 
@@ -153,6 +190,8 @@ public class ExchangeRequestService {
         historyRequestDTO.setGivenPublicationId(saved.getGivenPublication().getId());
         historyRequestDTO.setReceivedPublicationId(saved.getReceivedPublication().getId());
         historyRequestDTO.setStatus(saved.getStatus());
+        historyRequestDTO.setRequesterAddress(saved.getRequesterAddress());
+        historyRequestDTO.setRequestedFromUserAddress(saved.getRequestedFromUserAddress());
 
         historyService.createHistory(historyRequestDTO);
 

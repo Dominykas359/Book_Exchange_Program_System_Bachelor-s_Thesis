@@ -1,0 +1,162 @@
+.exchange-request-create-page {
+  width: 100%;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+.subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.state-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  padding: 24px;
+  color: #334155;
+}
+
+.error-card {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.notice-summary-card {
+  margin-bottom: 24px;
+  background: #f8fafc;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+}
+
+.notice-summary-card h2 {
+  margin: 0 0 16px;
+  font-size: 24px;
+  color: #0f172a;
+}
+
+.notice-book {
+  display: grid;
+  gap: 8px;
+}
+
+.notice-book p {
+  margin: 0;
+  color: #334155;
+  line-height: 1.55;
+}
+
+.exchange-form {
+  display: grid;
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+  font-size: 14px;
+  transition: box-shadow 150ms ease, border-color 150ms ease;
+  background: #ffffff;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: rgba(79, 70, 229, 0.55);
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.checkbox-field label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-field input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.hint {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.field-error {
+  margin: 0;
+  font-size: 12px;
+  color: #dc2626;
+}
+
+.action-row button {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 11px 14px;
+  font-weight: 650;
+  color: #fff;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  cursor: pointer;
+  transition: transform 120ms ease, filter 120ms ease;
+}
+
+.action-row button:hover {
+  filter: brightness(1.03);
+}
+
+.action-row button:active {
+  transform: scale(0.99);
+}
+
+.action-row button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

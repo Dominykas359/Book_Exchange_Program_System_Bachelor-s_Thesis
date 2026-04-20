@@ -1,10 +1,10 @@
 package com.dominykas.book.exchange.entity;
 
+import com.dominykas.book.exchange.entity.enums.NoticeStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.time.LocalDate;
 
@@ -32,4 +32,8 @@ public class Notice {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publication_id", nullable = false, unique = true)
     private Publication publication;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private NoticeStatus status;
 }

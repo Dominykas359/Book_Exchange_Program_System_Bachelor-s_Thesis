@@ -13,4 +13,6 @@ public class ExchangeRequestRequestDTO {
     private Long noticeId;
     private Long givenPublicationId;
     private Long receivedPublicationId;
+    private String requesterAddress;
+    private String requestedFromUserAddress;
 }

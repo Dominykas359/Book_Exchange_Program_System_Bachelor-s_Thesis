@@ -150,3 +150,33 @@
   font-weight: 700;
   color: #7c3aed;
 }
+
+.address-summary {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.address-box {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.address-label {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5b21b6;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.address-value {
+  margin: 0;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.5;
+  word-break: break-word;
+}

@@ -3,7 +3,7 @@
     <div class="modal-header">
       <div>
         <p class="eyebrow">Exchange details</p>
-        <h2 class="modal-title">{{ history.receivedPublication.title }}</h2>
+        <h2 class="modal-title">{{ getBookYouReceived().title }}</h2>
       </div>
 
       <button class="close-btn" (click)="close.emit()">✕</button>
@@ -24,12 +24,12 @@
 
       <div class="meta-item">
         <span class="meta-label">You</span>
-        <span class="meta-value">{{ getUserDisplayName(history.user) }}</span>
+        <span class="meta-value">{{ getCurrentUserDisplayName() }}</span>
       </div>
 
       <div class="meta-item">
         <span class="meta-label">Exchange partner</span>
-        <span class="meta-value">{{ getUserDisplayName(history.posterUser) }}</span>
+        <span class="meta-value">{{ getPartnerDisplayName() }}</span>
       </div>
 
       <div class="meta-item">
@@ -46,27 +46,43 @@
     <div class="exchange-grid">
       <div class="book-card">
         <p class="section-label">Book you gave away</p>
-        <h3>{{ history.givenPublication.title }}</h3>
-        <p><strong>Author:</strong> {{ history.givenPublication.author }}</p>
-        <p><strong>Language:</strong> {{ history.givenPublication.language }}</p>
-        <p><strong>Pages:</strong> {{ history.givenPublication.pageCount }}</p>
-        <p><strong>Cover:</strong> {{ history.givenPublication.cover }}</p>
-        <p><strong>Edition:</strong> {{ history.givenPublication.editionNumber }}</p>
-        <p><strong>Colored:</strong> {{ history.givenPublication.colored ? 'Yes' : 'No' }}</p>
-        <p><strong>Description:</strong> {{ history.givenPublication.description }}</p>
+        <h3>{{ getBookYouGaveAway().title }}</h3>
+        <p><strong>Author:</strong> {{ getBookYouGaveAway().author }}</p>
+        <p><strong>Language:</strong> {{ getBookYouGaveAway().language }}</p>
+        <p><strong>Pages:</strong> {{ getBookYouGaveAway().pageCount }}</p>
+        <p><strong>Cover:</strong> {{ getBookYouGaveAway().cover }}</p>
+        <p><strong>Edition:</strong> {{ getBookYouGaveAway().editionNumber }}</p>
+        <p><strong>Colored:</strong> {{ getBookYouGaveAway().colored ? 'Yes' : 'No' }}</p>
+        <p><strong>Description:</strong> {{ getBookYouGaveAway().description }}</p>
       </div>
 
       <div class="book-card">
         <p class="section-label">Book you received</p>
-        <h3>{{ history.receivedPublication.title }}</h3>
-        <p><strong>Author:</strong> {{ history.receivedPublication.author }}</p>
-        <p><strong>Language:</strong> {{ history.receivedPublication.language }}</p>
-        <p><strong>Pages:</strong> {{ history.receivedPublication.pageCount }}</p>
-        <p><strong>Cover:</strong> {{ history.receivedPublication.cover }}</p>
-        <p><strong>Edition:</strong> {{ history.receivedPublication.editionNumber }}</p>
-        <p><strong>Colored:</strong> {{ history.receivedPublication.colored ? 'Yes' : 'No' }}</p>
-        <p><strong>Description:</strong> {{ history.receivedPublication.description }}</p>
+        <h3>{{ getBookYouReceived().title }}</h3>
+        <p><strong>Author:</strong> {{ getBookYouReceived().author }}</p>
+        <p><strong>Language:</strong> {{ getBookYouReceived().language }}</p>
+        <p><strong>Pages:</strong> {{ getBookYouReceived().pageCount }}</p>
+        <p><strong>Cover:</strong> {{ getBookYouReceived().cover }}</p>
+        <p><strong>Edition:</strong> {{ getBookYouReceived().editionNumber }}</p>
+        <p><strong>Colored:</strong> {{ getBookYouReceived().colored ? 'Yes' : 'No' }}</p>
+        <p><strong>Description:</strong> {{ getBookYouReceived().description }}</p>
       </div>
+    </div>
+
+    <div class="address-grid">
+      @if (getYourAddress()) {
+      <div class="address-card">
+        <p class="section-label">Your address</p>
+        <p>{{ getYourAddress() }}</p>
+      </div>
+      }
+
+      @if (getOtherUserAddress()) {
+      <div class="address-card">
+        <p class="section-label">Other user address</p>
+        <p>{{ getOtherUserAddress() }}</p>
+      </div>
+      }
     </div>
   </div>
 </div>

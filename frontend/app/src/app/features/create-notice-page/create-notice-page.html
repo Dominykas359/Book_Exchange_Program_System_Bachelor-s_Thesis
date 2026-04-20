@@ -47,7 +47,7 @@
         <textarea rows="6" formControlName="description"></textarea>
 
         <small class="hint">
-          {{ form.controls.description.value?.length || 0 }} / 50000 characters
+          {{ form.controls.description.value.length || 0 }} / 50000 characters
         </small>
 
         @if (hasError('description', 'required')) {

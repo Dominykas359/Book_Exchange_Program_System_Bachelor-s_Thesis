@@ -2,11 +2,11 @@ package com.dominykas.book.exchange.service;
 
 import com.dominykas.book.exchange.dto.historyDTO.HistoryRequestDTO;
 import com.dominykas.book.exchange.dto.historyDTO.HistoryResponseDTO;
-import com.dominykas.book.exchange.entity.enums.ExchangeRequestStatus;
 import com.dominykas.book.exchange.entity.History;
 import com.dominykas.book.exchange.entity.Notice;
 import com.dominykas.book.exchange.entity.Publication;
 import com.dominykas.book.exchange.entity.User;
+import com.dominykas.book.exchange.entity.enums.ExchangeRequestStatus;
 import com.dominykas.book.exchange.mapper.HistoryMapper;
 import com.dominykas.book.exchange.repository.HistoryRepository;
 import com.dominykas.book.exchange.repository.NoticeRepository;
@@ -15,7 +15,6 @@ import com.dominykas.book.exchange.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -72,21 +71,8 @@ public class HistoryService {
     }
 
     public List<HistoryResponseDTO> getHistoryByUserId(Long userId) {
-        return historyRepository.findAllByUserIdOrderByTimeExchangedDescIdDesc(userId)
-                .stream()
-                .map(HistoryMapper::toDto)
-                .toList();
-    }
-
-    public List<HistoryResponseDTO> getMyHistory(Principal principal) {
-        if (principal == null) {
-            throw new RuntimeException("Unauthorized");
-        }
-
-        User user = userRepository.findByEmail(principal.getName())
-                .orElseThrow(() -> new RuntimeException("User not found: " + principal.getName()));
-
-        return historyRepository.findAllByUserIdOrderByTimeExchangedDescIdDesc(user.getId())
+        return historyRepository
+                .findAllByUserIdOrPosterUserIdOrderByTimeExchangedDescIdDesc(userId, userId)
                 .stream()
                 .map(HistoryMapper::toDto)
                 .toList();
